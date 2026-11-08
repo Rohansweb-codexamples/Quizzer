@@ -33,6 +33,18 @@ const BANK={
 ["What is the symbol for oxygen?",["Ox","O","Og","Oy"],1,"The chemical symbol for oxygen is O."],
 ["A reaction that gives out heat is called…",["Endothermic","Exothermic","Neutral","Reversible only"],1,"Exothermic reactions transfer energy to the surroundings, often as heat."]
 ]},
+"Forces & Magnets":{desc:"Pushes, pulls, friction, gravity and magnetic forces",q:[
+["What is a force?",["A push or a pull","A type of material","A measurement of temperature","A kind of energy only"],0,"A force is a push or pull that can change an object's movement or shape."],
+["What unit is used to measure force?",["Metres","Newtons","Kilograms","Seconds"],1,"Force is measured in newtons (N), named after Isaac Newton."],
+["What happens when forces on an object are balanced?",["It must speed up","Its motion does not change","It always moves backwards","It disappears"],1,"Balanced forces have no overall resultant force, so an object's motion does not change."],
+["Which surface is most likely to create the greatest friction?",["Smooth ice","Polished glass","Rough sandpaper","Wet tile"],2,"Rough surfaces usually create more friction when they rub together."],
+["Which force pulls objects towards the centre of Earth?",["Magnetism","Gravity","Friction","Air resistance"],1,"Gravity attracts objects with mass; Earth's gravity pulls objects towards its centre."],
+["Which material is strongly attracted to an ordinary magnet?",["Plastic","Wood","Iron","Glass"],2,"Iron is a magnetic material and is attracted to a magnet."],
+["What happens when a north pole is brought close to a south pole?",["They attract","They repel","Both poles disappear","The magnet becomes heavier"],0,"Opposite magnetic poles attract: north pulls towards south."],
+["What happens when two north poles are brought close together?",["They attract","They repel","They turn into south poles","Nothing can happen"],1,"Like poles repel. Two north poles push away from each other."],
+["Where is the magnetic force usually strongest on a bar magnet?",["At the centre","At the poles","Evenly everywhere","Only outside the magnet"],1,"A bar magnet's magnetic effect is strongest near its north and south poles."],
+["Can a magnet attract an iron object without touching it?",["Yes, magnetic forces can act at a distance","No, magnets must touch everything","Only if the iron is hot","Only underwater"],0,"A magnet's field can exert a force on magnetic materials without direct contact."]
+]},
 "Physics":{desc:"Forces, energy, light and sound",q:[
 ["What is the unit of force?",["Watt","Newton","Joule","Volt"],1,"Force is measured in newtons (N)."],
 ["What force pulls objects towards Earth?",["Friction","Magnetism","Gravity","Upthrust"],2,"Earth's gravity attracts objects towards its centre."],
@@ -106,7 +118,8 @@ const BANK={
 ["Why are leaves often broad and flat?",["To capture light","To dig into soil","To store rocks","To absorb sound"],0,"A broad surface helps leaves capture sunlight for photosynthesis."]
 ]}
 };
-let selected="Biology",questions=[],index=0,score=0,answered=false;
+let selected=new URLSearchParams(location.search).get("topic")||"Biology",questions=[],index=0,score=0,answered=false;
+if(!BANK[selected])selected="Biology";
 const $=id=>document.getElementById(id);
 function screen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id))}
 function buildTopics(){const el=$("topics");Object.entries(BANK).forEach(([name,data],i)=>{const b=document.createElement("button");b.className="topic"+(name===selected?" active":"");b.innerHTML='<span class="num">TOPIC '+String(i+1).padStart(2,"0")+'</span><b>'+name+'</b><small>'+data.desc+'</small>';b.onclick=()=>{selected=name;document.querySelectorAll(".topic").forEach(x=>x.classList.remove("active"));b.classList.add("active");$("start").disabled=false};el.append(b)})}
