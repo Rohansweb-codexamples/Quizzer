@@ -27,4 +27,4 @@ function draw(){ $("clock").textContent=String(Math.floor(elapsed/60)).padStart(
 $("timerToggle").onclick=()=>{if(tick){clearInterval(tick);tick=null;$("timerToggle").textContent="Resume"}else{$("timerToggle").textContent="Pause";tick=setInterval(()=>{elapsed++;draw()},1000)}};
 $("timerReset").onclick=()=>{clearInterval(tick);tick=null;elapsed=0;draw();$("timerToggle").textContent="Start"};
 })();
-</script></body></html>
+</script>
