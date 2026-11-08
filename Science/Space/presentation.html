@@ -24,4 +24,4 @@ document.addEventListener("fullscreenchange",()=>{$("fullscreen").textContent=do
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="PageDown")show(current+1);if(e.key==="ArrowLeft"||e.key==="PageUp")show(current-1)});
 let initial=0;try{const saved=JSON.parse(localStorage.getItem(KEY));if(Number.isInteger(saved.index))initial=saved.index}catch(e){}show(initial,true);
 })();
-</script></body></html>
+</script>
