@@ -123,8 +123,27 @@ const VISUALS={
 "Human Body":["https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1500&q=85","https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1500&q=85"],
 "Plants":["https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1500&q=85","https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=1500&q=85"]
 };
-const fallback="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1500&q=85";
-function picture(i){const list=VISUALS[topic]||[fallback];return list[i%list.length]}
+function escSvg(v){return String(v).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function picture(i){
+ const title=i===0?topic:(deck.slides[i-1]?.[0]||"Science discovery");
+ const palettes={"Space":["#081b43","#36a9ff","#f8d66d"],"Forces & Magnets":["#301b39","#ff5364","#f8c95c"],"Plants":["#123b32","#8ed16d","#e7c76a"],"Human Body":["#421d31","#ff7e8a","#f5c5b5"],"Biology":["#163b37","#61d5a6","#f5d36d"],"Chemistry":["#1d3152","#6ed8ff","#f6c85f"],"Physics":["#20284e","#8ba7ff","#ffcb6b"],"Earth Science":["#173c45","#65c8bd","#e2b36b"],"Animals & Habitats":["#24412d","#a6d36e","#f4bd6a"]};
+ const [bg,a,b]=palettes[topic]||["#20284e","#e52b3a","#ffbd84"];
+ const motifs={
+ "Space":[["☼","☾","✦"],["☀","◉","✧"],["●","◌","◉"],["◉","◎","●"],["☾","◐","✦"],["✦","✧","✦"],["◉","⌁","✦"]],
+ "Forces & Magnets":[["➜","⇦","↗"],["⇦","⇨","↔"],["≋","➜","≋"],["↓","●","↓"],["N","S","N"],["N","S","N"],["⌁","N","S"]],
+ "Plants":[["♣","♧","♠"],["☼","♣","☘"],["♧","↟","♣"],["✿","❀","✿"],["❧","●","❧"],["♵","♣","♧"],["♣","♧","✿"]],
+ "Human Body":[["♡","◉","♡"],["╱","╳","╲"],["♡","↗","♡"],["◉","≋","◉"],["◉","↓","◉"],["◉","⌁","◉"],["♡","✚","♡"]],
+ "Biology":[["◉","◌","◎"],["◉","✣","◌"],["♡","◉","♡"],["✚","♡","✚"],["●","→","●"],["❧","♣","❧"],["◌","◎","◉"]],
+ "Chemistry":[["H","O","H"],["p","n","e"],["Li","C","O"],["≋","◌","≋"],["pH","7","14"],["＋","→","＝"],["Cu","Fe","Si"]],
+ "Physics":[["➜","●","➜"],["◷","➜","◷"],["⚡","☼","♨"],["↗","◉","↘"],["〰","〰","〰"],["＋","－","⚡"],["N","S","⌁"]],
+ "Earth Science":[["◉","◌","◉"],["◉","◎","◉"],["▰","▱","▰"],["☁","☂","☼"],["☼","☁","〰"],["〰","◉","〰"],["↗","◉","↘"]],
+ "Animals & Habitats":[["♧","◉","♧"],["☼","♣","◉"],["☼","♣","➜"],["◉","♧","◉"],["◉","➜","◉"],["♣","✿","♧"],["♧","◉","✿"]]
+ };
+ const m=(motifs[topic]||motifs["Physics"])[Math.max(0,(i-1))%7];
+ const cx=[260,500,740], shapes=m.map((v,j)=>'<g transform="translate('+cx[j]+' 245)"><circle r="'+(j===1?94:75)+'" fill="'+(j===1?b:a)+'" opacity=".2" stroke="'+(j===1?b:a)+'" stroke-width="5"/><text y="28" text-anchor="middle" font-size="112" font-family="Arial" font-weight="700" fill="'+(j===1?b:"#ffffff")+'">'+escSvg(v)+'</text></g>').join("");
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="'+bg+'"/><stop offset="1" stop-color="#111827"/></linearGradient><pattern id="p" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#fff" opacity=".22"/></pattern></defs><rect width="1000" height="560" rx="28" fill="url(#g)"/><rect width="1000" height="560" rx="28" fill="url(#p)"/><path d="M90 390 Q500 480 910 390" fill="none" stroke="'+a+'" stroke-width="3" opacity=".5"/>'+shapes+'<text x="500" y="500" fill="#fff" text-anchor="middle" font-size="27" font-family="Arial" font-weight="700" letter-spacing="3">'+escSvg(title.toUpperCase())+'</text><text x="500" y="535" fill="'+b+'" text-anchor="middle" font-size="13" font-family="Arial" letter-spacing="5">THREE SEEDS · SCIENCE</text></svg>';
+ return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
 function makeSlides(){
  const cover=document.createElement("section");cover.className="slide active cover";cover.innerHTML='<div class="inner"><div class="tag">THREE SEEDS · SCIENCE PRESENTATION</div><h1>'+topic+' <span class="accent">explained.</span></h1><p>'+deck.intro+'</p><div class="cover-art"><img src="'+picture(0)+'" alt="'+topic+' visual" onerror="this.src=\''+fallback+'\'"></div><div class="choice"><a href="./science-quiz.html">Take a science quiz</a><a class="secondary" href="../../../index.html">Home</a></div></div>';stage.append(cover);
  deck.slides.forEach((s,i)=>{const el=document.createElement("section");el.className="slide";const facts=s.slice(3,7).map((x,j)=>'<div class="tile"><b>KEY IDEA '+String(j+1).padStart(2,"0")+'</b>'+x+'</div>').join("");const quiz=i===7;el.innerHTML='<div class="inner"><div class="tag">'+topic.toUpperCase()+' · FIELD NOTES '+String(i+1).padStart(2,"0")+'</div><div class="lesson"><div class="lesson-copy"><h2>'+s[0]+'</h2><p>'+s[1]+'</p><div class="grid">'+(quiz?s.slice(3,7).map((x,j)=>'<div class="tile"><b>OPTION '+String.fromCharCode(65+j)+'</b>'+x+'</div>').join(""):facts)+'</div>'+(quiz?'<div class="callout"><b>'+s[2]+'</b><br>'+s[7]+'</div>':'')+'</div><div class="visual"><img loading="lazy" src="'+picture(i+1)+'" alt="'+s[0]+'" onerror="this.src=\''+fallback+'\'"><div class="visual-label">'+topic+' · VISUAL EXPLORATION</div></div></div></div>';stage.append(el)});
