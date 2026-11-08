@@ -8,9 +8,9 @@
 <script>
 const worlds=[
 {name:"Sunny meadow",scene:"MEADOW HABITAT",hint:"Start with sunlight, then the plant that makes its own food.",chain:[["Sun","SUN"],["Grass","GRASS"],["Rabbit","RABBIT"],["Fox","FOX"]],extra:[["Bee","BEE"],["Mushroom","FUNGI"]]},
-{name:"Pond life",scene:"POND HABITAT",hint:"Tiny pond plants feed small animals. Build the chain to the bird.",chain:[["Sun","☀️"],["Algae","ALGAE"],["Tadpole","TADPOLE"],["Heron","HERON"]],extra:[["Water lily","LILY"],["Dragonfly","FLY"]]},
-{name:"Woodland",scene:"WOODLAND HABITAT",hint:"The tree feeds a leaf-eater. Which woodland bird eats caterpillars?",chain:[["Sun","☀️"],["Oak leaves","OAK"],["Caterpillar","LARVA"],["Blue tit","BIRD"]],extra:[["Deer","DEER"],["Acorn","ACORN"]]},
-{name:"Ocean",scene:"OCEAN HABITAT",hint:"Seaweed is eaten by sea urchins. Put their predator at the end.",chain:[["Sun","☀️"],["Seaweed","KELP"],["Sea urchin","URCHIN"],["Sea otter","OTTER"]],extra:[["Dolphin","DOLPHIN"],["Seashell","SHELL"]]}
+{name:"Pond life",scene:"POND HABITAT",hint:"Tiny pond plants feed small animals. Build the chain to the bird.",chain:[["Sun","SUN"],["Algae","ALGAE"],["Tadpole","TADPOLE"],["Heron","HERON"]],extra:[["Water lily","LILY"],["Dragonfly","FLY"]]},
+{name:"Woodland",scene:"WOODLAND HABITAT",hint:"The tree feeds a leaf-eater. Which woodland bird eats caterpillars?",chain:[["Sun","SUN"],["Oak leaves","OAK"],["Caterpillar","LARVA"],["Blue tit","BIRD"]],extra:[["Deer","DEER"],["Acorn","ACORN"]]},
+{name:"Ocean",scene:"OCEAN HABITAT",hint:"Seaweed is eaten by sea urchins. Put their predator at the end.",chain:[["Sun","SUN"],["Seaweed","KELP"],["Sea urchin","URCHIN"],["Sea otter","OTTER"]],extra:[["Dolphin","DOLPHIN"],["Seashell","SHELL"]]}
 ];let stage=0,score=0,moves=0,selected=null,placed=[],tiles=[];
 const $=id=>document.getElementById(id);function show(id){["intro","game","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
 function begin(){stage=0;score=0;load()}
