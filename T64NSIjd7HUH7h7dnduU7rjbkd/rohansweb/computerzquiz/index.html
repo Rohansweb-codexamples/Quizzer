@@ -167,30 +167,6 @@ const questions=[
 {c:"computers",q:"What is the main purpose of a computer's motherboard?",a:["Display pictures","Connect and let components communicate","Make the internet faster","Store all files permanently"],k:1,e:"The motherboard is the main circuit board. It connects the CPU, memory, storage and other components."}
 ];
 const $=id=>document.getElementById(id);
-let currentSlide=0;
-const presentationSlides=[...document.querySelectorAll(".slide")];
-function renderSlide(){
- presentationSlides.forEach((slide,i)=>slide.classList.toggle("active",i===currentSlide));
- [...$("slideDots").children].forEach((dot,i)=>dot.classList.toggle("active",i===currentSlide));
- $("slideCount").textContent="SLIDE "+(currentSlide+1)+" OF "+presentationSlides.length;
- $("prevSlide").disabled=currentSlide===0;
- $("prevSlide").style.opacity=currentSlide===0?".45":"1";
- $("nextSlide").textContent=currentSlide===presentationSlides.length-1?"Start quiz →":"Next →";
-}
-function openPresentation(){window.location.href="./presentation.html"}
-$("openPresentation").addEventListener("click",openPresentation);\n$("openPresenter").addEventListener("click",()=>window.location.href="./presenter.html");
-$("exitPresentation").addEventListener("click",()=>show("welcome"));
-$("prevSlide").addEventListener("click",()=>{if(currentSlide>0){currentSlide--;renderSlide()}});
-$("nextSlide").addEventListener("click",()=>{if(currentSlide<presentationSlides.length-1){currentSlide++;renderSlide()}else{show("topics")}});
-[...$("slideDots").children].forEach((dot,i)=>dot.addEventListener("click",()=>{currentSlide=i;renderSlide()}));
-document.addEventListener("keydown",e=>{
- if(!$("presentation").classList.contains("active"))return;
- if(e.key==="ArrowRight"){if(currentSlide<presentationSlides.length-1){currentSlide++;renderSlide()}else show("topics")}
- if(e.key==="ArrowLeft"&&currentSlide>0){currentSlide--;renderSlide()}
- if(e.key==="Escape")show("welcome");
-});
-
-
 let pool=[],index=0,score=0,selected="all",answersLog=[],soundOn=true,player="";
 const correctSound=new Audio("./dragon-studio-correct-472358%20(1).mp3");
 const incorrectSound=new Audio("./u_n2rdb8hxnh-incorrect-293358%20(1).mp3");
