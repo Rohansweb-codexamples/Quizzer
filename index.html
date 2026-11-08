@@ -2,69 +2,109 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f47721">
-<title>Quizzer | Quiz library</title>
+<title>Quizzer | Learn, watch, play</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400..700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" rel="stylesheet">
 <style>
 :root{--orange:#f47721;--deep:#d94c16;--ink:#28211d}*{box-sizing:border-box}
-body{margin:0;min-height:100vh;font-family:"Google Sans Flex","Google Sans",Arial,sans-serif;color:var(--ink);background:#f47721 url('./Orange%20And%20White%20Colorful%20Quiz%20Interactive%20Presentation%20(Presentation).jpg') center/cover fixed no-repeat;position:relative}
+html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:"Google Sans Flex","Google Sans",Arial,sans-serif;color:var(--ink);background:#f47721 url('./Orange%20And%20White%20Colorful%20Quiz%20Interactive%20Presentation%20(Presentation).jpg') center/cover fixed no-repeat;position:relative}
 body:before{content:"";position:fixed;inset:0;background:linear-gradient(135deg,rgba(255,145,49,.52),rgba(255,255,255,.28) 48%,rgba(232,83,26,.45));pointer-events:none}
 .symbol{font-family:"Material Symbols Rounded";font-weight:normal;font-style:normal;font-size:24px;line-height:1;display:inline-flex;vertical-align:middle;font-feature-settings:"liga";-webkit-font-smoothing:antialiased}
-header,main,footer{position:relative;z-index:1}.top{height:78px;display:flex;align-items:center;justify-content:space-between;max-width:1180px;margin:auto;padding:0 26px}
-.brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:750;letter-spacing:-.8px}.brand-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;color:white;background:linear-gradient(145deg,#ff9a37,#e94c1b);box-shadow:0 7px 18px #9b3d1b38}.brand-icon .symbol{font-size:26px}
-.top-link{color:#7a3519;text-decoration:none;font-weight:700;padding:11px 15px;border-radius:12px;background:#ffffffbd;border:1px solid #fff9}
-main{max-width:1180px;margin:auto;padding:5vh 26px 4vh}
-.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:5vw;min-height:43vh}
+header,main,footer{position:relative;z-index:1}.top{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1180px;margin:auto;padding:12px 26px}
+.brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:750;letter-spacing:-.8px;white-space:nowrap}.brand-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;color:white;background:linear-gradient(145deg,#ff9a37,#e94c1b);box-shadow:0 7px 18px #9b3d1b38}.brand-icon .symbol{font-size:26px}
+nav{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}nav a,.top-link{color:#7a3519;text-decoration:none;font-weight:700;padding:10px 12px;border-radius:12px;background:#ffffffbd;border:1px solid #fff9;font-size:13px}nav a:hover,.top-link:hover{background:white}
+main{max-width:1180px;margin:auto;padding:4vh 26px 4vh}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:5vw;min-height:39vh}
 .kicker{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:30px;background:#fff9;color:#9b461d;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
 h1{font-size:clamp(52px,7vw,86px);line-height:.94;letter-spacing:-4px;margin:20px 0;color:#2b211b}h1 span{color:#e75d1b}
 .lead{font-size:clamp(17px,2vw,20px);line-height:1.55;color:#634a3b;max-width:540px;margin:0 0 25px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;padding:14px 20px;border-radius:14px;font-weight:800;transition:transform .18s,box-shadow .18s}.btn:hover{transform:translateY(-3px);box-shadow:0 12px 24px #8e3a1c24}.primary{background:linear-gradient(100deg,#ff922e,#ed5b1b);color:white;box-shadow:0 8px 20px #ed641f40}
-.art{min-height:270px;border-radius:30px;background:linear-gradient(145deg,#ffb347,#f47721 55%,#d94c16);box-shadow:0 28px 65px #78300c3d;position:relative;overflow:hidden;display:grid;place-items:center;border:1px solid #ffffff8c}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;padding:14px 20px;border-radius:14px;font-weight:800;transition:transform .18s,box-shadow .18s}.btn:hover,.resource:hover{transform:translateY(-3px);box-shadow:0 12px 24px #8e3a1c24}.primary{background:linear-gradient(100deg,#ff922e,#ed5b1b);color:white;box-shadow:0 8px 20px #ed641f40}
+.art{min-height:245px;border-radius:30px;background:linear-gradient(145deg,#ffb347,#f47721 55%,#d94c16);box-shadow:0 28px 65px #78300c3d;position:relative;overflow:hidden;display:grid;place-items:center;border:1px solid #ffffff8c}
 .art:before,.art:after{content:"";position:absolute;border:1px solid #ffffff70;border-radius:50%;width:270px;height:270px}.art:before{transform:translate(-95px,100px)}.art:after{width:190px;height:190px;transform:translate(125px,-105px)}
-.art-icon{width:145px;height:145px;border-radius:38px;background:#ffffffdf;color:#e85c1b;display:grid;place-items:center;box-shadow:0 18px 45px #762b1244;transform:rotate(-7deg);z-index:1}.art-icon .symbol{font-size:85px}
+.art-icon{width:135px;height:135px;border-radius:38px;background:#ffffffdf;color:#e85c1b;display:grid;place-items:center;box-shadow:0 18px 45px #762b1244;transform:rotate(-7deg);z-index:1}.art-icon .symbol{font-size:80px}
 .art-label{position:absolute;bottom:22px;left:25px;color:white;font-weight:800;letter-spacing:1.5px;font-size:12px;z-index:2}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:32px 0 17px}.section-head h2{font-size:clamp(25px,3vw,34px);letter-spacing:-1px;margin:0}.section-head p{margin:0;color:#76533e;font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
-.quiz-card{min-height:172px;display:flex;flex-direction:column;align-items:flex-start;padding:19px;background:#ffffffed;border:1px solid #fff;border-radius:19px;box-shadow:0 12px 30px #79340e18;text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden}
-.quiz-card:hover{transform:translateY(-4px);box-shadow:0 18px 35px #79340e26}
-.quiz-icon{width:45px;height:45px;border-radius:14px;background:#fff0e5;color:#e65b1c;display:grid;place-items:center;margin-bottom:13px}.quiz-icon .symbol{font-size:26px}
-.quiz-card strong{font-size:16px;margin-bottom:5px}.quiz-card small{font-size:12px;color:#76675e;line-height:1.4}
-.status{margin-top:auto;padding-top:13px;color:#b75a25;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
-.live .status{color:#25804d}.live:after{content:"";position:absolute;right:-23px;top:18px;width:75px;height:75px;border-radius:50%;background:#f4772110}
-.soon{cursor:default}.soon:hover{transform:none;box-shadow:0 12px 30px #79340e18}
+.section{margin:36px 0 0;scroll-margin-top:18px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 16px}.section-head h2{font-size:clamp(25px,3vw,34px);letter-spacing:-1px;margin:0}.section-head p{margin:0;color:#76533e;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.resource{min-height:166px;display:flex;flex-direction:column;align-items:flex-start;padding:18px;background:#ffffffed;border:1px solid #fff;border-radius:19px;box-shadow:0 12px 30px #79340e18;text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden}
+.resource:hover{box-shadow:0 18px 35px #79340e26}
+.resource-icon{width:44px;height:44px;border-radius:14px;background:#fff0e5;color:#e65b1c;display:grid;place-items:center;margin-bottom:12px}.resource-icon .symbol{font-size:26px}
+.resource strong{font-size:16px;margin-bottom:5px}.resource small{font-size:12px;color:#76675e;line-height:1.45}
+.meta{margin-top:auto;padding-top:13px;color:#b75a25;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.featured .meta{color:#25804d}
+.note{margin-top:14px;padding:13px 16px;border-radius:14px;background:#ffffffc9;color:#74533f;font-size:12px;line-height:1.5}
 footer{max-width:1180px;margin:0 auto;padding:24px 26px 30px;color:#78472e;font-size:12px}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{gap:25px}.art{min-height:230px}}
-@media(max-width:620px){.top{height:68px;padding:0 18px}main{padding:4vh 18px 3vh}.hero{grid-template-columns:1fr;gap:20px}.art{min-height:175px;order:-1}.art-icon{width:95px;height:95px;border-radius:27px}.art-icon .symbol{font-size:58px}h1{letter-spacing:-3px;margin:15px 0}.section-head{display:block;margin-top:30px}.section-head p{margin-top:6px}.grid{gap:11px}.quiz-card{min-height:165px;padding:15px}.top-link{font-size:13px}}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{gap:25px}nav{gap:5px}nav a{padding:8px;font-size:12px}}
+@media(max-width:620px){.top{align-items:flex-start;flex-direction:column;padding:12px 18px}.top nav{justify-content:flex-start}main{padding:3vh 18px}.hero{grid-template-columns:1fr;gap:20px}.art{min-height:160px;order:-1}.art-icon{width:88px;height:88px;border-radius:25px}.art-icon .symbol{font-size:55px}h1{letter-spacing:-3px;margin:15px 0}.section-head{display:block}.section-head p{margin-top:6px}.grid{gap:10px}.resource{min-height:174px;padding:14px}.resource strong{font-size:14px}}
 </style>
 </head>
 <body>
-<header><div class="top"><div class="brand"><span class="brand-icon"><span class="symbol">quiz</span></span>Quizzer</div><a class="top-link" href="#quiz-library">Browse quizzes <span class="symbol">arrow_downward</span></a></div></header>
+<header><div class="top"><div class="brand"><span class="brand-icon"><span class="symbol">school</span></span>Quizzer</div><nav aria-label="Main navigation"><a href="#quizzes">Quizzes</a><a href="#videos">Videos</a><a href="#presentations">Presentations</a><a href="#activities">Activities</a><a href="#websites">Learning sites</a></nav></div></header>
 <main>
 <section class="hero">
-<div><div class="kicker"><span class="symbol">auto_awesome</span> Think · Play · Learn</div>
-<h1>Find your next <span>quiz.</span></h1>
-<p class="lead">Pick a topic, challenge yourself and see how much you know. New quiz adventures are on the way!</p>
-<a class="btn primary" href="./T64NSIjd7HUH7h7dnduU7rjbkd/rohansweb/computerzquiz/quiz.html"><span class="symbol">play_arrow</span> Play the computer quiz</a>
+<div><div class="kicker"><span class="symbol">auto_awesome</span> Think · Watch · Play · Learn</div>
+<h1>Your learning <span>hub.</span></h1>
+<p class="lead">More than quizzes! Explore videos, presentations, interactive activities and brilliant learning websites. Choose something that interests you and start exploring.</p>
+<a class="btn primary" href="#resources"><span class="symbol">explore</span> Explore resources</a>
 </div>
-<div class="art"><div class="art-icon"><span class="symbol">psychology</span></div><div class="art-label">A NEW CHALLENGE IS WAITING</div></div>
+<div class="art"><div class="art-icon"><span class="symbol">lightbulb</span></div><div class="art-label">DISCOVER SOMETHING NEW TODAY</div></div>
 </section>
-<section id="quiz-library">
-<div class="section-head"><h2>Explore the quiz library</h2><p>Choose a subject and get ready to play.</p></div>
+
+<section class="section" id="quizzes">
+<div class="section-head"><h2>Quizzes & challenges</h2><p>Test what you know.</p></div>
 <div class="grid">
-<a class="quiz-card live" href="./T64NSIjd7HUH7h7dnduU7rjbkd/rohansweb/computerzquiz/quiz.html"><span class="quiz-icon"><span class="symbol">computer</span></span><strong>Computers & Technology</strong><small>Discover computers and how we use them every day.</small><span class="status">Available now · Play quiz →</span></a>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">science</span></span><strong>Science</strong><small>Explore space, experiments, animals and the natural world.</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">public</span></span><strong>Geography</strong><small>Test your knowledge of countries, capitals and landmarks.</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">history_edu</span></span><strong>History</strong><small>Travel through time and discover the past.</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">calculate</span></span><strong>Maths</strong><small>Try number puzzles, times tables and brain teasers.</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">menu_book</span></span><strong>English & Words</strong><small>Play with spelling, vocabulary and word challenges.</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">sports_soccer</span></span><strong>Sport</strong><small>How much do you know about games and sporting stars?</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">music_note</span></span><strong>Music</strong><small>Put your music knowledge and listening skills to the test.</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">pets</span></span><strong>Animals & Nature</strong><small>Meet amazing creatures and explore the outdoors.</small><span class="status">Coming soon</span></div>
-<div class="quiz-card soon"><span class="quiz-icon"><span class="symbol">extension</span></span><strong>General Knowledge</strong><small>A bit of everything in one big brain challenge.</small><span class="status">Coming soon</span></div>
+<a class="resource featured" href="./T64NSIjd7HUH7h7dnduU7rjbkd/rohansweb/computerzquiz/quiz.html"><span class="resource-icon"><span class="symbol">computer</span></span><strong>Computers & Technology</strong><small>Discover computers and how we use them every day.</small><span class="meta">Play the existing quiz ↗</span></a>
+<a class="resource" href="https://www.bbc.co.uk/bitesize"><span class="resource-icon"><span class="symbol">school</span></span><strong>BBC Bitesize quizzes</strong><small>Practice English, maths, science and more.</small><span class="meta">Open BBC Bitesize ↗</span></a>
+<a class="resource" href="https://www.natgeokids.com/uk/"><span class="resource-icon"><span class="symbol">public</span></span><strong>National Geographic Kids</strong><small>Animals, nature, geography and fun facts.</small><span class="meta">Explore quizzes ↗</span></a>
+<a class="resource" href="https://www.world-geography-games.com/"><span class="resource-icon"><span class="symbol">globe</span></span><strong>World Geography Games</strong><small>Challenge yourself on countries and maps.</small><span class="meta">Play games ↗</span></a>
+</div>
+</section>
+
+<section class="section" id="videos">
+<div class="section-head"><h2>Watch & discover</h2><p>Videos that make learning fun.</p></div>
+<div class="grid">
+<a class="resource" href="https://www.bbc.co.uk/teach"><span class="resource-icon"><span class="symbol">smart_display</span></span><strong>BBC Teach</strong><small>Classroom videos, clips and lessons across lots of subjects.</small><span class="meta">Watch videos ↗</span></a>
+<a class="resource" href="https://www.youtube.com/@crashcoursekids"><span class="resource-icon"><span class="symbol">science</span></span><strong>Crash Course Kids</strong><small>Explore science and the world around us.</small><span class="meta">Watch the channel ↗</span></a>
+<a class="resource" href="https://ed.ted.com/"><span class="resource-icon"><span class="symbol">movie</span></span><strong>TED-Ed</strong><small>Animated lessons about science, history, ideas and more.</small><span class="meta">Watch lessons ↗</span></a>
+<a class="resource" href="https://thekidshouldseethis.com/"><span class="resource-icon"><span class="symbol">play_circle</span></span><strong>The Kid Should See This</strong><small>A collection of fascinating educational videos.</small><span class="meta">Explore videos ↗</span></a>
+<a class="resource" href="https://plus.nasa.gov/"><span class="resource-icon"><span class="symbol">rocket_launch</span></span><strong>NASA+</strong><small>Space documentaries, launches and science programmes.</small><span class="meta">Watch NASA ↗</span></a>
+<a class="resource" href="https://www.natgeokids.com/uk/"><span class="resource-icon"><span class="symbol">pets</span></span><strong>Nat Geo Kids</strong><small>Discover wildlife, amazing places and nature.</small><span class="meta">Watch & explore ↗</span></a>
+</div>
+</section>
+
+<section class="section" id="presentations">
+<div class="section-head"><h2>Presentations & slideshows</h2><p>Learn with visual lessons.</p></div>
+<div class="grid">
+<a class="resource featured" href="./T64NSIjd7HUH7h7dnduU7rjbkd/rohansweb/computerzquiz/presentation.html"><span class="resource-icon"><span class="symbol">slideshow</span></span><strong>Computers presentation</strong><small>Open the existing interactive presentation about computers in everyday life.</small><span class="meta">Open presentation ↗</span></a>
+<a class="resource featured" href="./T64NSIjd7HUH7h7dnduU7rjbkd/rohansweb/computerzquiz/presenter.html"><span class="resource-icon"><span class="symbol">present_to_all</span></span><strong>Presenter view</strong><small>Open the presenter controls for the existing computer presentation.</small><span class="meta">Open presenter ↗</span></a>
+<a class="resource" href="https://www.bbc.co.uk/bitesize"><span class="resource-icon"><span class="symbol">auto_stories</span></span><strong>BBC learning guides</strong><small>Visual topic guides and revision material.</small><span class="meta">Explore lessons ↗</span></a>
+<a class="resource" href="https://www.thenational.academy/"><span class="resource-icon"><span class="symbol">cast_for_education</span></span><strong>Oak National Academy</strong><small>Teacher-led video lessons and classroom resources.</small><span class="meta">Explore lessons ↗</span></a>
+</div>
+<div class="note">The two Quizzer presentation links open files already in this repository. The other links take you to external learning libraries.</div>
+</section>
+
+<section class="section" id="activities">
+<div class="section-head"><h2>Interactive activities</h2><p>Have a go and learn by doing.</p></div>
+<div class="grid">
+<a class="resource" href="https://scratch.mit.edu/"><span class="resource-icon"><span class="symbol">code</span></span><strong>Scratch</strong><small>Create games, animations and interactive stories.</small><span class="meta">Start creating ↗</span></a>
+<a class="resource" href="https://blockly.games/"><span class="resource-icon"><span class="symbol">extension</span></span><strong>Blockly Games</strong><small>Learn coding through fun puzzles and challenges.</small><span class="meta">Play coding games ↗</span></a>
+<a class="resource" href="https://spaceplace.nasa.gov/"><span class="resource-icon"><span class="symbol">rocket</span></span><strong>NASA Space Place</strong><small>Space activities, facts, games and projects.</small><span class="meta">Explore space ↗</span></a>
+<a class="resource" href="https://musiclab.chromeexperiments.com/"><span class="resource-icon"><span class="symbol">music_note</span></span><strong>Chrome Music Lab</strong><small>Experiment with music, sound and rhythm.</small><span class="meta">Make music ↗</span></a>
+<a class="resource" href="https://phet.colorado.edu/"><span class="resource-icon"><span class="symbol">science</span></span><strong>PhET Simulations</strong><small>Try interactive science and maths experiments.</small><span class="meta">Try simulations ↗</span></a>
+<a class="resource" href="https://www.natgeokids.com/uk/"><span class="resource-icon"><span class="symbol">travel_explore</span></span><strong>Explore the natural world</strong><small>Discover animals, habitats and our planet.</small><span class="meta">Start exploring ↗</span></a>
+</div>
+</section>
+
+<section class="section" id="websites">
+<div class="section-head"><h2>More learning websites</h2><p>Useful places to explore.</p></div>
+<div class="grid">
+<a class="resource" href="https://www.bbc.co.uk/bitesize"><span class="resource-icon"><span class="symbol">menu_book</span></span><strong>BBC Bitesize</strong><small>Guides, videos, revision and activities.</small><span class="meta">Visit website ↗</span></a>
+<a class="resource" href="https://www.thenational.academy/"><span class="resource-icon"><span class="symbol">school</span></span><strong>Oak National Academy</strong><small>Free lessons across the school curriculum.</small><span class="meta">Visit website ↗</span></a>
+<a class="resource" href="https://www.khanacademy.org/"><span class="resource-icon"><span class="symbol">functions</span></span><strong>Khan Academy</strong><small>Learn maths, computing, science and more.</small><span class="meta">Visit website ↗</span></a>
+<a class="resource" href="https://www.dkfindout.com/uk/"><span class="resource-icon"><span class="symbol">travel_explore</span></span><strong>DK Find Out!</strong><small>Discover facts about the world, history and science.</small><span class="meta">Visit website ↗</span></a>
 </div>
 </section>
 </main>
-<footer>Quizzer · Think, play and learn</footer>
+<footer id="resources">Quizzer · A place to watch, explore, create and learn. External websites open in a new destination.</footer>
 </body>
 </html>
