@@ -230,6 +230,24 @@ h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:8px 0 12px}
 </div>
 <script>
 
+const questions=[
+{c:"computers",q:"Which part is often called the brain of a computer?",a:["Hard drive","CPU","Keyboard","Monitor"],k:1,e:"The CPU (Central Processing Unit) processes instructions and performs calculations."},
+{c:"computers",q:"What does RAM help a computer do?",a:["Store files forever","Print documents","Keep data ready while programs are running","Connect to Wi-Fi"],k:2,e:"RAM is short-term working memory. It holds data the computer is using right now."},
+{c:"computers",q:"Which device is used to move a pointer and click on things?",a:["Mouse","Speaker","Microphone","Printer"],k:0,e:"A mouse is an input device used to move the pointer and select items."},
+{c:"electronics",q:"What is the unit used to measure electrical current?",a:["Volt","Watt","Ampere","Ohm"],k:2,e:"Electric current is measured in amperes, often shortened to amps (A)."},
+{c:"computers",q:"Which of these is an operating system?",a:["Google Chrome","Windows","HDMI","Bluetooth"],k:1,e:"Windows is an operating system. It manages the computer and lets applications run."},
+{c:"electronics",q:"What does a battery provide to a circuit?",a:["Light only","Electrical energy","Internet access","Sound"],k:1,e:"A battery supplies electrical energy to power components in a circuit."},
+{c:"computers",q:"Which storage device has no moving mechanical parts?",a:["DVD drive","Floppy disk","SSD","Tape drive"],k:2,e:"A solid-state drive (SSD) stores data in flash memory and has no spinning disk."},
+{c:"electronics",q:"What is the job of a resistor in a circuit?",a:["Limit the flow of current","Make a battery recharge","Store photographs","Create Wi-Fi"],k:0,e:"A resistor limits current and can help set the voltage in part of a circuit."},
+{c:"computers",q:"What does USB stand for?",a:["Universal Serial Bus","United System Board","User Storage Box","Universal Screen Base"],k:0,e:"USB stands for Universal Serial Bus. It connects devices and can transfer data and power."},
+{c:"electronics",q:"Which component allows current to flow mainly in one direction?",a:["Resistor","Diode","Switch","Capacitor"],k:1,e:"A diode is designed to conduct current mainly in one direction."},
+{c:"computers",q:"Which one is an example of an input device?",a:["Monitor","Projector","Keyboard","Speaker"],k:2,e:"A keyboard sends information into a computer, so it is an input device."},
+{c:"electronics",q:"What happens when a simple series circuit is broken at one point?",a:["Every lamp gets brighter","Current stops throughout the circuit","The battery doubles in power","Nothing changes"],k:1,e:"A series circuit has one path. If that path is broken, current cannot flow anywhere in it."},
+{c:"computers",q:"What is a web browser used for?",a:["Editing the computer's hardware","Opening and viewing websites","Charging a laptop","Cooling the CPU"],k:1,e:"A browser such as Chrome, Firefox or Edge is used to visit and view websites."},
+{c:"electronics",q:"What does an LED do?",a:["Emits light when current flows through it","Stores computer memory","Measures temperature only","Connects a computer to a screen"],k:0,e:"LED means light-emitting diode. It produces light when powered in the correct direction."},
+{c:"computers",q:"What is the main purpose of a computer's motherboard?",a:["Display pictures","Connect and let components communicate","Make the internet faster","Store all files permanently"],k:1,e:"The motherboard is the main circuit board. It connects the CPU, memory, storage and other components."}
+];
+const $=id=>document.getElementById(id);
 let currentSlide=0;
 const presentationSlides=[...document.querySelectorAll(".slide")];
 function renderSlide(){
@@ -253,24 +271,7 @@ document.addEventListener("keydown",e=>{
  if(e.key==="Escape")show("welcome");
 });
 
-const questions=[
-{c:"computers",q:"Which part is often called the brain of a computer?",a:["Hard drive","CPU","Keyboard","Monitor"],k:1,e:"The CPU (Central Processing Unit) processes instructions and performs calculations."},
-{c:"computers",q:"What does RAM help a computer do?",a:["Store files forever","Print documents","Keep data ready while programs are running","Connect to Wi-Fi"],k:2,e:"RAM is short-term working memory. It holds data the computer is using right now."},
-{c:"computers",q:"Which device is used to move a pointer and click on things?",a:["Mouse","Speaker","Microphone","Printer"],k:0,e:"A mouse is an input device used to move the pointer and select items."},
-{c:"electronics",q:"What is the unit used to measure electrical current?",a:["Volt","Watt","Ampere","Ohm"],k:2,e:"Electric current is measured in amperes, often shortened to amps (A)."},
-{c:"computers",q:"Which of these is an operating system?",a:["Google Chrome","Windows","HDMI","Bluetooth"],k:1,e:"Windows is an operating system. It manages the computer and lets applications run."},
-{c:"electronics",q:"What does a battery provide to a circuit?",a:["Light only","Electrical energy","Internet access","Sound"],k:1,e:"A battery supplies electrical energy to power components in a circuit."},
-{c:"computers",q:"Which storage device has no moving mechanical parts?",a:["DVD drive","Floppy disk","SSD","Tape drive"],k:2,e:"A solid-state drive (SSD) stores data in flash memory and has no spinning disk."},
-{c:"electronics",q:"What is the job of a resistor in a circuit?",a:["Limit the flow of current","Make a battery recharge","Store photographs","Create Wi-Fi"],k:0,e:"A resistor limits current and can help set the voltage in part of a circuit."},
-{c:"computers",q:"What does USB stand for?",a:["Universal Serial Bus","United System Board","User Storage Box","Universal Screen Base"],k:0,e:"USB stands for Universal Serial Bus. It connects devices and can transfer data and power."},
-{c:"electronics",q:"Which component allows current to flow mainly in one direction?",a:["Resistor","Diode","Switch","Capacitor"],k:1,e:"A diode is designed to conduct current mainly in one direction."},
-{c:"computers",q:"Which one is an example of an input device?",a:["Monitor","Projector","Keyboard","Speaker"],k:2,e:"A keyboard sends information into a computer, so it is an input device."},
-{c:"electronics",q:"What happens when a simple series circuit is broken at one point?",a:["Every lamp gets brighter","Current stops throughout the circuit","The battery doubles in power","Nothing changes"],k:1,e:"A series circuit has one path. If that path is broken, current cannot flow anywhere in it."},
-{c:"computers",q:"What is a web browser used for?",a:["Editing the computer's hardware","Opening and viewing websites","Charging a laptop","Cooling the CPU"],k:1,e:"A browser such as Chrome, Firefox or Edge is used to visit and view websites."},
-{c:"electronics",q:"What does an LED do?",a:["Emits light when current flows through it","Stores computer memory","Measures temperature only","Connects a computer to a screen"],k:0,e:"LED means light-emitting diode. It produces light when powered in the correct direction."},
-{c:"computers",q:"What is the main purpose of a computer's motherboard?",a:["Display pictures","Connect and let components communicate","Make the internet faster","Store all files permanently"],k:1,e:"The motherboard is the main circuit board. It connects the CPU, memory, storage and other components."}
-];
-const $=id=>document.getElementById(id);
+
 let pool=[],index=0,score=0,selected="all",answersLog=[],soundOn=true,player="";
 const correctSound=new Audio("./dragon-studio-correct-472358%20(1).mp3");
 const incorrectSound=new Audio("./u_n2rdb8hxnh-incorrect-293358%20(1).mp3");
