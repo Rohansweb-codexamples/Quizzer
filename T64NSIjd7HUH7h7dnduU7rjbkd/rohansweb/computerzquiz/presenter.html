@@ -8,27 +8,64 @@
 <section class="panel"><div class="label">Audience display</div><div class="screen"><iframe id="display" src="./presentation.html" title="Audience presentation" allowfullscreen></iframe></div><div class="row"><button class="btn secondary" id="back">← Previous</button><button class="btn" id="forward">Next slide →</button><button class="btn secondary" id="fullscreen">Fullscreen audience</button></div><div class="label" style="margin-top:20px">All slides</div><div class="slide-list" id="slideList"></div></section>
 <aside>
 <section class="panel"><div class="label">Up next</div><div class="preview"><small id="nextNumber">SLIDE 02</small><h2 id="nextTitle">Computers are everywhere.</h2></div><div class="label" style="margin-top:20px">Presenter notes</div><textarea class="notes" id="notes" placeholder="Add your speaking notes for this slide..."></textarea><div class="hint">Notes are private to this presenter window and are not shown on the audience display.</div></section>
-<section class="panel" style="margin-top:16px"><div class="label">Presentation timer</div><div class="timer" id="timer">00:00</div><div class="row"><button class="btn" id="startTimer">Start</button><button class="btn secondary" id="resetTimer">Reset</button></div><div class="status" id="connection">Audience display is open in the preview above.</div></section>
+<section class="panel" style="margin-top:16px"><div class="label">Presentation timer</div><div class="timer" id="timer">00:00</div><div class="row"><button class="btn" id="startTimer">Start</button><button class="btn secondary" id="resetTimer">Reset</button></div><div class="status" id="connection">Connecting to live preview…</div></section>
 <section class="panel" style="margin-top:16px"><div class="label">Presenter shortcuts</div><div class="hint">Use the Previous and Next buttons, or the arrow keys, to control the audience display. Open the audience display in a separate window to present on a projector or second screen.</div></section>
 </aside></div>
 <script>
 (function(){
-const titles=["Computers in our everyday lives","Computers are everywhere","What makes a computer work?","How is a computer made?","DOGZILLA","Technology is changing our world"];
-const notes=["Introduce the topic. Ask everyone where they see computers during a normal day.","Talk through smartphones, laptops, smart speakers such as Alexa, televisions, tablets and robots. Ask the audience to name more devices.","Explain the difference between hardware and software. CPU processes instructions, RAM is working memory, and storage keeps files.","Explain the three stages: building the hardware, creating the operating system, and setting up and testing the computer.","DOGZILLA uses AI vision and voice instructions. Explain how the robot can recognise a red cube, move it with its robotic arm and place it in a blue box.","Recap how computers help us. Ask which device they use most and what they would invent for the future."];
-let index=0,seconds=0,running=false,timerId=null;const channel=("BroadcastChannel" in window)?new BroadcastChannel("computerz-presentation"):null;
+const titles=["Computers in our everyday lives","Computers are everywhere","What makes a computer work?","How is a computer made?","Learn to code","Coding in action: algorithms","What is artificial intelligence?","Robots can help people","DOGZILLA: an AI robot","Technology is changing our world"];
+const notes=[
+"Introduce the topic. Ask everyone where they see computers during a normal day.",
+"Talk about phones, laptops, smart speakers, televisions, tablets and robots.",
+"Explain hardware and software, plus the CPU, RAM and storage.",
+"Explain how engineers build hardware and developers create operating systems and apps.",
+"Coding means writing instructions. Mention Python, JavaScript and Scratch, and the kinds of projects people can create.",
+"Explain algorithms, input, processing and output. Discuss decisions, loops and sequences.",
+"AI learns patterns from examples and can recognise images, understand language and make predictions. AI can make mistakes, so people check its work.",
+"Discuss factory robots, rescue robots and helper robots. Sensors let robots detect the world around them.",
+"Show the DOGZILLA picture and video. Discuss its legs, cameras, AI vision, voice commands and robotic arm.",
+"Recap how coding, AI and robotics work together. Ask what the audience would invent."
+];
+let index=0,seconds=0,running=false,timerId=null;
+const channel=("BroadcastChannel" in window)?new BroadcastChannel("computerz-presentation"):null;
 const frame=document.getElementById("display");
-function send(){if(channel)channel.postMessage({type:"slide",index:index});try{localStorage.setItem("computerz-slide",String(index))}catch(e){}}
-function render(){document.getElementById("back").disabled=index===0;document.getElementById("forward").textContent=index===5?"Restart slides":"Next slide →";document.getElementById("nextNumber").textContent="SLIDE "+String(Math.min(index+2,6)).padStart(2,"0");document.getElementById("nextTitle").textContent=index===5?"Presentation complete":titles[index+1];document.getElementById("notes").value=notes[index];document.querySelectorAll(".slide-pick").forEach((b,i)=>b.classList.toggle("active",i===index));send()}
-function go(i){index=Math.max(0,Math.min(5,i));render()}
-document.getElementById("back").onclick=()=>go(index-1);document.getElementById("forward").onclick=()=>go(index===5?0:index+1);
-document.getElementById("launch").onclick=()=>{try{localStorage.setItem("computerz-slide",String(index))}catch(e){}const w=window.open("./presentation.html","computerzAudience");if(!w)document.getElementById("connection").textContent="Pop-up blocked. Allow pop-ups to open the audience display in a new window.";else document.getElementById("connection").textContent="Audience display opened in a separate window. Press F there for fullscreen."};
-document.getElementById("fullscreen").onclick=async()=>{try{await frame.requestFullscreen()}catch(e){document.getElementById("connection").textContent="Fullscreen was blocked. Use the audience display window and press F."}};
-document.getElementById("notes").oninput=e=>{notes[index]=e.target.value};
-const list=document.getElementById("slideList");titles.forEach((title,i)=>{const b=document.createElement("button");b.className="slide-pick";b.textContent=String(i+1).padStart(2,"0")+" · "+title;b.onclick=()=>go(i);list.appendChild(b)});
-function drawTimer(){document.getElementById("timer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
-document.getElementById("startTimer").onclick=()=>{if(running){clearInterval(timerId);running=false;document.getElementById("startTimer").textContent="Resume"}else{running=true;document.getElementById("startTimer").textContent="Pause";timerId=setInterval(()=>{seconds++;drawTimer()},1000)}};
-document.getElementById("resetTimer").onclick=()=>{clearInterval(timerId);running=false;seconds=0;drawTimer();document.getElementById("startTimer").textContent="Start"};
-if(channel)channel.onmessage=e=>{if(e.data&&e.data.type==="slide"){index=Math.max(0,Math.min(5,e.data.index));document.getElementById("nextNumber").textContent="SLIDE "+String(Math.min(index+2,6)).padStart(2,"0");document.getElementById("nextTitle").textContent=index===5?"Presentation complete":titles[index+1];document.querySelectorAll(".slide-pick").forEach((b,i)=>b.classList.toggle("active",i===index));document.getElementById("notes").value=notes[index]}};
+const $=id=>document.getElementById(id);
+function send(){
+ const message={type:"computerz-go-to-slide",index};
+ try{frame.contentWindow.postMessage(message,"*")}catch(e){}
+ if(channel)channel.postMessage({type:"slide",index});
+ try{localStorage.setItem("computerz-slide",String(index))}catch(e){}
+}
+function render(){
+ $("back").disabled=index===0;
+ $("forward").textContent=index===titles.length-1?"Restart slides":"Next slide →";
+ $("nextNumber").textContent=index===titles.length-1?"COMPLETE":"SLIDE "+String(index+2).padStart(2,"0");
+ $("nextTitle").textContent=index===titles.length-1?"Presentation complete":titles[index+1];
+ $("notes").value=notes[index];
+ document.querySelectorAll(".slide-pick").forEach((button,i)=>button.classList.toggle("active",i===index));
+ send();
+}
+function go(i){index=Math.max(0,Math.min(titles.length-1,i));render()}
+frame.addEventListener("load",()=>{send();$("connection").textContent="Live preview connected. Slide changes will appear here."});
+window.addEventListener("message",e=>{if(e.data&&e.data.type==="computerz-preview-ready"){send();$("connection").textContent="Live preview connected. Slide changes will appear here."}});
+$("back").onclick=()=>go(index-1);
+$("forward").onclick=()=>go(index===titles.length-1?0:index+1);
+$("launch").onclick=()=>{
+ try{localStorage.setItem("computerz-slide",String(index))}catch(e){}
+ const w=window.open("./presentation.html","computerzAudience");
+ if(!w)$("connection").textContent="Pop-up blocked. Allow pop-ups to open the audience display.";
+ else{$("connection").textContent="Audience display opened. Use its full-screen button.";w.focus()}
+};
+$("fullscreen").onclick=async()=>{
+ try{await frame.requestFullscreen()}catch(e){$("connection").textContent="Fullscreen is unavailable in this browser. Use the audience display window's full-screen button."}
+};
+$("notes").oninput=e=>{notes[index]=e.target.value};
+const list=$("slideList");
+titles.forEach((title,i)=>{const button=document.createElement("button");button.className="slide-pick";button.textContent=String(i+1).padStart(2,"0")+" · "+title;button.onclick=()=>go(i);list.appendChild(button)});
+function drawTimer(){$("timer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
+$("startTimer").onclick=()=>{if(running){clearInterval(timerId);running=false;$("startTimer").textContent="Resume"}else{running=true;$("startTimer").textContent="Pause";timerId=setInterval(()=>{seconds++;drawTimer()},1000)}};
+$("resetTimer").onclick=()=>{clearInterval(timerId);running=false;seconds=0;drawTimer();$("startTimer").textContent="Start"};
+if(channel)channel.onmessage=e=>{if(e.data&&e.data.type==="slide"){index=Math.max(0,Math.min(titles.length-1,e.data.index));$("nextNumber").textContent=index===titles.length-1?"COMPLETE":"SLIDE "+String(index+2).padStart(2,"0");$("nextTitle").textContent=index===titles.length-1?"Presentation complete":titles[index+1];document.querySelectorAll(".slide-pick").forEach((button,i)=>button.classList.toggle("active",i===index));$("notes").value=notes[index]}};
 document.addEventListener("keydown",e=>{if(e.target.tagName==="TEXTAREA")return;if(e.key==="ArrowRight")go(index+1);if(e.key==="ArrowLeft")go(index-1)});
 render();drawTimer();
 })();
