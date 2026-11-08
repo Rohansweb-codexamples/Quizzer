@@ -18,13 +18,13 @@
 (function(){
 const slides=[...document.querySelectorAll(".slide")],channel=("BroadcastChannel" in window)?new BroadcastChannel("computerz-presentation"):null;let current=0,hideTimer;
 function send(){if(channel)channel.postMessage({type:"slide",index:current})}
-function show(i,broadcast=true){current=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,n)=>s.classList.toggle("active",n===current));const label=String(current+1).padStart(2,"0")+" / "+String(slides.length).padStart(2,"0");document.getElementById("count").textContent=label;document.getElementById("slideNo").textContent=label;document.getElementById("progressFill").style.width=((current+1)/slides.length*100)+"%";document.getElementById("prev").disabled=current===0;document.getElementById("next").textContent=current===slides.length-1?"Finish":"Next →";if(broadcast)send()}
+function show(i,broadcast=true){current=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,n)=>s.classList.toggle("active",n===current));if(broadcast){try{localStorage.setItem("computerz-slide",String(current))}catch(e){}}const label=String(current+1).padStart(2,"0")+" / "+String(slides.length).padStart(2,"0");document.getElementById("count").textContent=label;document.getElementById("slideNo").textContent=label;document.getElementById("progressFill").style.width=((current+1)/slides.length*100)+"%";document.getElementById("prev").disabled=current===0;document.getElementById("next").textContent=current===slides.length-1?"Finish":"Next →";if(broadcast)send()}
 document.getElementById("prev").onclick=()=>show(current-1);document.getElementById("next").onclick=()=>show(current===slides.length-1?0:current+1);
 document.getElementById("full").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 document.getElementById("presenter").onclick=()=>window.open("./presenter.html","computerzPresenter","width=1180,height=820");
 document.addEventListener("keydown",e=>{if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();show(current+1)}if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();show(current-1)}if(e.key.toLowerCase()==="f")document.getElementById("full").click();if(e.key.toLowerCase()==="h")document.getElementById("controls").classList.toggle("hidden")});
 if(channel)channel.onmessage=e=>{if(e.data&&e.data.type==="slide")show(e.data.index,false)};
 window.addEventListener("storage",e=>{if(e.key==="computerz-slide"&&e.newValue!==null)show(Number(e.newValue),false)});
-show(0,false);
+let initial=0;try{initial=Number(localStorage.getItem("computerz-slide")||0)}catch(e){}show(initial,false);
 })();
 </script></body></html>
