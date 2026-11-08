@@ -30,7 +30,7 @@ h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:8px 0 12px}
 .lead{font-size:17px;line-height:1.65;color:#625a55;max-width:610px}
 .orange{color:var(--orange)}
 .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center}
-.hero-art{min-height:270px;border-radius:22px;background:linear-gradient(145deg,#ffb45d,#f47721 55%,#d94c16);display:grid;place-items:center;position:relative;overflow:hidden;padding:25px;color:white}
+.hero-art{min-height:270px;border-radius:22px;background:#f47721;display:grid;place-items:center;position:relative;overflow:hidden;padding:0;color:white}.starter-seeds{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:22px}.hero-art:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(transparent,#57250b66);pointer-events:none}.hero-art .art-caption{z-index:2;text-shadow:0 2px 8px #45200a}
 .hero-art:before,.hero-art:after{content:"";position:absolute;border:1px solid #ffffff55;border-radius:50%;width:230px;height:230px}
 .hero-art:before{transform:translate(-60px,75px)}
 .hero-art:after{transform:translate(115px,-90px);width:170px;height:170px}
@@ -90,35 +90,6 @@ h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:8px 0 12px}
 @media(max-width:390px){.category-grid{grid-template-columns:1fr}.quiz-head{align-items:flex-start}.hint{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* Presentation mode */
-.presentation{max-width:920px!important;width:100%;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 16px 45px #7d3b1725}
-.presentation-stage{min-height:455px;padding:28px;background:linear-gradient(#ffffffd9,#ffffffed),url("./Pimages/Bg.jpeg") center/cover;display:flex;align-items:center}
-.slide{display:none;width:100%;animation:appear .25s ease}
-.slide.active{display:block}
-.slide-inner{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:28px}
-.slide-copy h2{font-size:clamp(28px,4.5vw,43px);line-height:1.08;margin:10px 0 15px}
-.slide-copy p{font-size:17px;line-height:1.55;color:#5d514a}
-.slide-photo{width:100%;max-height:315px;object-fit:contain;border-radius:15px;box-shadow:0 10px 28px #54280e20}
-.slide-kicker{font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#df5e1b}
-.device-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
-.device{background:#fff;border:1px solid #f1d8c5;border-radius:13px;padding:15px 10px;text-align:center;font-weight:800;color:#51433a;box-shadow:0 4px 12px #8e4b1a0d}
-.device b{display:block;font-size:24px;color:#ed7625;margin-bottom:8px}
-.think-note{background:#fff0e3;border-left:4px solid #f47721;padding:13px 16px;border-radius:8px;margin-top:17px;font-weight:700;color:#a64b1b}
-.steps{display:grid;gap:14px;margin-top:22px}
-.step{display:flex;align-items:center;gap:15px;background:#fff;border:1px solid #f0d9c8;border-radius:14px;padding:14px 16px;box-shadow:0 4px 13px #8e4b1a0b}
-.step-num{width:38px;height:38px;flex:0 0 38px;border-radius:50%;background:#f47721;color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px}
-.step strong{display:block;font-size:16px}.step small{display:block;color:#82766e;margin-top:3px;font-size:12px}
-.dogzilla-slide{grid-template-columns:.9fr 1.1fr}
-.dogzilla-slide .slide-photo{max-height:355px;object-fit:cover}
-.dogzilla-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.dogzilla-tags span{font-size:10px;letter-spacing:.5px;font-weight:900;color:#fff;background:#e65c20;border-radius:20px;padding:8px 10px}
-.presentation-controls{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;background:#fff;border-top:1px solid #f2e4da;gap:12px}
-.slide-count{font-size:12px;color:#8b7c72;font-weight:800;white-space:nowrap}
-.slide-dots{display:flex;gap:7px;align-items:center}
-.slide-dot{border:0;width:8px;height:8px;border-radius:20px;background:#e9d8cc;padding:0}
-.slide-dot.active{width:23px;background:#f47721}
-.presentation-controls .primary,.presentation-controls .secondary{padding:11px 17px}
-@media(max-width:700px){.presentation-stage{padding:19px;min-height:0}.slide-inner,.dogzilla-slide{grid-template-columns:1fr;gap:16px}.slide-photo{max-height:210px;order:-1}.slide-copy p{font-size:15px}.device-grid{grid-template-columns:repeat(2,1fr)}.presentation-controls{padding:12px;flex-wrap:wrap}.slide-count{order:3;width:100%;text-align:center}}
 
 </style>
 </head>
@@ -137,64 +108,12 @@ h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:8px 0 12px}
       <p class="lead">Test your knowledge of computers, gadgets and electronics. Choose a topic, answer the questions and see how high you can score.</p>
       <input class="name-input" id="playerName" maxlength="24" placeholder="Enter your name (optional)" aria-label="Your name">
       <div class="meta-row"><span class="pill">15 questions</span><span class="pill">Instant feedback</span><span class="pill">All ages</span></div>
-      <button class="primary" id="startBtn">Start the quiz <span aria-hidden="true">→</span></button> <button class="secondary" id="openPresentation">Open presentation ↗</button> <button class="secondary" id="openPresenter">Presenter view ↗</button>
+      <button class="primary" id="startBtn">Start the quiz <span aria-hidden="true">→</span></button>
     </div>
-    <div class="hero-art"><div class="chip">TECH</div><div class="art-caption">THINK • CLICK • DISCOVER</div></div>
+    <div class="hero-art"><img class="starter-seeds" src="./Pimages/Slide1welcone.png" alt="Three little tree seed characters"><div class="art-caption">THINK • CLICK • DISCOVER</div></div>
   </div>
 </section>
 
-<section class="screen" id="presentation">
- <div class="presentation">
-  <div class="presentation-stage">
-   <article class="slide active">
-    <div class="slide-inner">
-     <div class="slide-copy"><div class="slide-kicker">Computerz • Learn about technology</div><h2>Computers in our <span class="orange">everyday lives</span></h2><p>Discover how computers and electronics help us at home, at school and all around the world.</p><div class="think-note">Let's explore the technology we use every day!</div></div>
-     <img class="slide-photo" src="./Pimages/Slide1welcone.png" alt="Welcome presentation slide">
-    </div>
-   </article>
-   <article class="slide">
-    <div class="slide-inner">
-     <div class="slide-copy"><div class="slide-kicker">Slide 2 • Technology around us</div><h2>Computers in our everyday lives</h2><p>Computers and electronics play an important role in our lives. A lot of people use:</p>
-      <div class="device-grid">
-       <div class="device"><b>▣</b>Smartphones</div><div class="device"><b>▰</b>Laptops</div><div class="device"><b>◉</b>Smart speakers<br><small>(e.g. Alexa)</small></div><div class="device"><b>▭</b>Televisions</div><div class="device"><b>▯</b>Tablets</div><div class="device"><b>⚙</b>Robots</div>
-      </div>
-      <div class="think-note">Can you think of any more?</div>
-     </div>
-     <div class="slide-photo" style="background:linear-gradient(145deg,#ffb45d,#f47721,#d94c16);min-height:260px;display:grid;place-items:center;color:white;text-align:center;padding:25px"><div><div style="font-size:76px;line-height:1">TECH</div><strong style="letter-spacing:2px">ALL AROUND US</strong><p style="color:white">At home • At school • Everywhere</p></div></div>
-    </div>
-   </article>
-   <article class="slide">
-    <div class="slide-inner">
-     <div class="slide-copy"><div class="slide-kicker">Slide 3 • Behind the technology</div><h2>How is a computer <span class="orange">made?</span></h2><p>It takes lots of people and different skills to make a computer ready to use.</p>
-      <div class="steps">
-       <div class="step"><span class="step-num">1</span><div><strong>Someone makes the computer</strong><small>Parts are designed, built and put together.</small></div></div>
-       <div class="step"><span class="step-num">2</span><div><strong>Someone designs the operating system</strong><small>The OS helps the computer run apps and manage its parts.</small></div></div>
-       <div class="step"><span class="step-num">3</span><div><strong>Someone sets up the computer</strong><small>The software is installed, checked and made ready to use.</small></div></div>
-      </div>
-     </div>
-     <div class="slide-photo" style="background:linear-gradient(145deg,#fff0e2,#ffb66c);min-height:280px;display:grid;place-items:center;text-align:center;color:#9d4519;padding:25px"><div><div style="font-size:90px;line-height:1">⚙</div><h2 style="font-size:25px">Design • Build • Set up</h2><p style="font-size:14px">Hardware + software = a working computer</p></div></div>
-    </div>
-   </article>
-   <article class="slide">
-    <div class="slide-inner dogzilla-slide">
-     <div class="slide-copy"><div class="slide-kicker">Slide 4 • Artificial intelligence</div><h2>DOGZILLA</h2><h3 style="color:#d9581e;margin:0 0 12px">AI THAT CAN SEE, UNDERSTAND AND INTERACT</h3>
-      <p>DOGZILLA brings artificial intelligence to life through movement, vision and interaction.</p>
-      <p>Its quadruped platform and robotic arm demonstrate how AI can recognise objects, respond to instructions, move through its environment and physically interact with the world around it.</p>
-      <div class="dogzilla-tags"><span>VOICE INTERACTION</span><span>AI VISION RECOGNITION</span><span>ROBOTIC MANIPULATION</span><span>QUADRUPED MOVEMENT</span></div>
-      <div class="think-note">Example instruction: “DOGZILLA, pick up the red cube and put it in the blue box.”</div>
-     </div>
-     <img class="slide-photo" src="./Pimages/Slide4%20dogzilla.png.png" alt="DOGZILLA quadruped robot with robotic arm">
-    </div>
-   </article>
-  </div>
-  <div class="presentation-controls">
-   <button class="secondary" id="exitPresentation">✕ Exit</button>
-   <div class="slide-dots" id="slideDots"><button class="slide-dot active" aria-label="Slide 1"></button><button class="slide-dot" aria-label="Slide 2"></button><button class="slide-dot" aria-label="Slide 3"></button><button class="slide-dot" aria-label="Slide 4"></button></div>
-   <span class="slide-count" id="slideCount">SLIDE 1 OF 4</span>
-   <div><button class="secondary" id="prevSlide">←</button> <button class="primary" id="nextSlide">Next →</button></div>
-  </div>
- </div>
-</section>
 
 <section class="screen" id="topics">
   <div class="eyebrow">Choose your challenge</div><h2>Pick a topic</h2><p class="lead">Choose one area or mix everything together.</p>
