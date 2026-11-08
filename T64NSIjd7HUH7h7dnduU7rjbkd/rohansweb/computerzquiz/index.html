@@ -1,199 +1,35 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f47721">
-<title>Computerz Quiz | Rohans Web</title>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f47721">
+<title>Quizzer | Learn, play and test yourself</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" rel="stylesheet">
 <style>
-:root{--orange:#f47721;--deep:#d94c16;--ink:#242424;--muted:#686868;--white:#fff;--line:#f0d5c2;--green:#218653;--red:#c83f35}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-body{min-height:100vh;background:#f47721 url('../../../Orange%20And%20White%20Colorful%20Quiz%20Interactive%20Presentation%20(Presentation).jpg') center/cover fixed no-repeat;display:flex;align-items:center;justify-content:center;padding:22px;position:relative}
-body:before{content:"";position:fixed;inset:0;background:linear-gradient(135deg,rgba(255,145,49,.42),rgba(255,255,255,.22) 48%,rgba(232,83,26,.35));pointer-events:none}
-button,input{font:inherit}
-button{cursor:pointer}
-.app{position:relative;width:min(100%,1050px);min-height:610px;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.8);border-radius:26px;box-shadow:0 24px 70px rgba(99,42,10,.25);overflow:hidden;display:flex;flex-direction:column}
-.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;border-bottom:1px solid #f1e5dc;background:rgba(255,255,255,.84)}
-.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.4px;font-size:19px}
-.brand-mark{width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,#ff9a37,#e94c1b);display:grid;place-items:center;color:#fff;font-size:20px;font-weight:900;box-shadow:0 5px 12px #f4772144}
-.brand small{display:block;color:#8a817b;font-size:10px;letter-spacing:1.5px;margin-top:2px}
-.top-actions{display:flex;align-items:center;gap:10px}
-.icon-btn{border:1px solid #eadfd7;background:#fff;border-radius:11px;width:39px;height:39px;color:#555;font-size:17px}
-main{flex:1;padding:34px;display:flex;align-items:center;justify-content:center}
-.screen{width:100%;max-width:800px;margin:auto;display:none;animation:appear .28s ease}
-.screen.active{display:block}
-@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.eyebrow{color:var(--deep);font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:11px}
-h1{font-size:clamp(35px,6vw,62px);line-height:1.02;letter-spacing:-2.3px;margin:12px 0 16px}
-h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:8px 0 12px}
-.lead{font-size:17px;line-height:1.65;color:#625a55;max-width:610px}
-.orange{color:var(--orange)}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center}
-.hero-art{min-height:270px;border-radius:22px;background:#f47721;display:grid;place-items:center;position:relative;overflow:hidden;padding:0;color:white}.starter-seeds{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:22px}.hero-art:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(transparent,#57250b66);pointer-events:none}.hero-art .art-caption{z-index:2;text-shadow:0 2px 8px #45200a}
-.hero-art:before,.hero-art:after{content:"";position:absolute;border:1px solid #ffffff55;border-radius:50%;width:230px;height:230px}
-.hero-art:before{transform:translate(-60px,75px)}
-.hero-art:after{transform:translate(115px,-90px);width:170px;height:170px}
-.chip{position:relative;z-index:1;border:2px solid #fff;border-radius:25px;width:130px;height:130px;display:grid;place-items:center;font-size:38px;font-weight:900;box-shadow:0 15px 30px #8f350b44}
-.art-caption{position:absolute;bottom:20px;left:22px;font-weight:700;letter-spacing:1px;font-size:12px}
-.meta-row{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0}
-.pill{padding:9px 13px;border-radius:30px;background:#fff1e7;color:#a94a19;font-size:12px;font-weight:700}
-.primary{border:0;background:linear-gradient(100deg,#ff922e,#ed5b1b);color:#fff;font-weight:800;border-radius:13px;padding:15px 25px;box-shadow:0 7px 16px #ed641f35;transition:transform .15s,filter .15s}
-.primary:hover{transform:translateY(-2px);filter:brightness(1.04)}
-.secondary{border:1px solid #e8d9ce;background:#fff;color:#4e4945;font-weight:700;border-radius:13px;padding:14px 20px}
-.name-input{display:block;width:min(100%,350px);padding:14px 15px;border:1px solid #e8d9ce;border-radius:12px;margin:20px 0 15px;outline:none}
-.name-input:focus{border-color:var(--orange);box-shadow:0 0 0 3px #f4772122}
-.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:25px 0}
-.category{border:1px solid #f0dfd3;border-radius:15px;padding:17px;background:#fff;text-align:left;min-height:105px}
-.category strong{display:block;margin:8px 0 4px}
-.category span{font-size:12px;color:#82766e}
-.category.selected{border:2px solid var(--orange);background:#fff7f0;padding:16px}
-.category .cat-icon{font-size:23px;color:var(--orange);font-weight:900}
-.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:22px}
-.counter{font-size:13px;font-weight:800;color:#766b64}
-.score-chip{background:#fff1e7;color:#a94a19;border-radius:30px;padding:9px 13px;font-size:12px;font-weight:800}
-.progress{height:8px;background:#f2e8e1;border-radius:20px;overflow:hidden;margin-bottom:30px}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#ff9a38,#e94d1c);border-radius:20px;transition:width .3s}
-.question-card{background:#fff;border:1px solid #f0e4dc;border-radius:20px;padding:26px}
-.question-tag{font-size:11px;color:var(--deep);font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
-.question-title{font-size:clamp(21px,3vw,29px);line-height:1.3;margin:12px 0 22px;font-weight:800}
-.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.answer{background:#fff;border:1.5px solid #eadfd7;border-radius:13px;padding:16px;text-align:left;display:flex;align-items:center;gap:12px;min-height:65px;color:#38312c;transition:.15s}
-.answer:hover:not(:disabled){border-color:var(--orange);background:#fff8f2}
-.answer:disabled{cursor:default}
-.letter{width:29px;height:29px;flex:0 0 29px;border-radius:9px;background:#fff0e5;color:#c75a1d;display:grid;place-items:center;font-weight:800;font-size:12px}
-.answer.correct{border-color:#56a77c;background:#effaf3;color:#17633d}
-.answer.correct .letter{background:#d8f2e2;color:#17633d}
-.answer.wrong{border-color:#df8179;background:#fff2f0;color:#a22f29}
-.answer.wrong .letter{background:#ffe0dc;color:#a22f29}
-.feedback{display:none;margin-top:18px;padding:15px 17px;border-radius:13px;line-height:1.5;font-size:14px}
-.feedback.show{display:block}
-.feedback.good{background:#effaf3;color:#17633d}
-.feedback.bad{background:#fff3ef;color:#9f3b2c}
-.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px}
-.hint{font-size:12px;color:#8a817b}
-.result{text-align:center;max-width:650px;margin:auto}
-.score-ring{width:155px;height:155px;margin:24px auto;border-radius:50%;background:conic-gradient(var(--orange) var(--score),#f3e6dc 0);display:grid;place-items:center;position:relative}
-.score-ring:before{content:"";position:absolute;inset:11px;background:#fff;border-radius:50%}
-.score-ring div{position:relative;font-size:35px;font-weight:900}
-.score-ring small{display:block;font-size:11px;color:#857970;text-align:center;font-weight:700}
-.result-stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0}
-.stat{background:#fff7f1;border:1px solid #f1e1d5;border-radius:13px;padding:13px 20px;min-width:110px}
-.stat strong{display:block;font-size:22px;color:#d85c1d}
-.stat span{font-size:11px;color:#81766e}
-.review{margin:24px 0;text-align:left;background:#fff;border:1px solid #eee0d6;border-radius:15px;padding:18px}
-.review-row{padding:12px 0;border-bottom:1px solid #f2e9e3;font-size:13px;line-height:1.5}
-.review-row:last-child{border:0}
-.review-row strong{display:block;margin-bottom:3px}
-.bottom{padding:14px 28px;border-top:1px solid #f1e5dc;display:flex;justify-content:space-between;color:#94877f;font-size:11px}
-@media(max-width:700px){body{padding:10px;background-attachment:scroll}.app{min-height:calc(100vh - 20px);border-radius:18px}.topbar{height:64px;padding:0 16px}.brand{font-size:16px}main{padding:22px 17px}.hero-grid{grid-template-columns:1fr}.hero-art{min-height:170px;order:-1}.chip{width:90px;height:90px;font-size:29px}.category-grid{grid-template-columns:1fr 1fr}.answers{grid-template-columns:1fr}.question-card{padding:20px}.bottom{padding:12px 16px}.lead{font-size:15px}}
-@media(max-width:390px){.category-grid{grid-template-columns:1fr}.quiz-head{align-items:flex-start}.hint{display:none}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-
-
-</style>
-</head>
-<body>
-<div class="app">
-<header class="topbar">
-  <div class="brand"><div class="brand-mark">Q</div><div>COMPUTERZ QUIZ<small>ROHANS WEB • KNOW YOUR TECH</small></div></div>
-  <div class="top-actions"><button class="icon-btn" id="soundBtn" title="Toggle sound" aria-label="Toggle sound">♪</button><button class="icon-btn" id="fullBtn" title="Toggle fullscreen" aria-label="Toggle fullscreen">⛶</button></div>
-</header>
-<main>
-<section class="screen active" id="welcome">
-  <div class="hero-grid">
-    <div>
-      <div class="eyebrow">The big technology challenge</div>
-      <h1>How much do you know about <span class="orange">tech?</span></h1>
-      <p class="lead">Test your knowledge of computers, gadgets and electronics. Choose a topic, answer the questions and see how high you can score.</p>
-      <input class="name-input" id="playerName" maxlength="24" placeholder="Enter your name (optional)" aria-label="Your name">
-      <div class="meta-row"><span class="pill">15 questions</span><span class="pill">Instant feedback</span><span class="pill">All ages</span></div>
-      <button class="primary" id="startBtn">Start the quiz <span aria-hidden="true">→</span></button>
-    </div>
-    <div class="hero-art"><img class="starter-seeds" src="./Pimages/Slide1welcone.png" alt="Three little tree seed characters"><div class="art-caption">THINK • CLICK • DISCOVER</div></div>
-  </div>
-</section>
-
-
-<section class="screen" id="topics">
-  <div class="eyebrow">Choose your challenge</div><h2>Pick a topic</h2><p class="lead">Choose one area or mix everything together.</p>
-  <div class="category-grid" id="categoryGrid">
-    <button class="category selected" data-category="all"><span class="cat-icon">01</span><strong>Mixed technology</strong><span>A bit of everything</span></button>
-    <button class="category" data-category="computers"><span class="cat-icon">02</span><strong>Computers</strong><span>Parts, memory and systems</span></button>
-    <button class="category" data-category="electronics"><span class="cat-icon">03</span><strong>Electronics</strong><span>Circuits, power and devices</span></button>
-  </div>
-  <button class="primary" id="beginBtn">Let's play →</button> <button class="secondary" id="backWelcome">Back</button>
-</section>
-<section class="screen" id="playing">
-  <div class="quiz-head"><div><div class="eyebrow">Computerz quiz</div><div class="counter" id="counter">QUESTION 1 OF 15</div></div><div class="score-chip" id="scoreChip">SCORE: 0</div></div>
-  <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="question-card">
-    <div class="question-tag" id="questionCategory">COMPUTERS</div>
-    <div class="question-title" id="questionText"></div>
-    <div class="answers" id="answers"></div>
-    <div class="feedback" id="feedback" aria-live="polite"></div>
-  </div>
-  <div class="quiz-footer"><span class="hint">Choose the best answer.</span><button class="primary" id="nextBtn" disabled>Next question →</button></div>
-</section>
-<section class="screen" id="results">
-  <div class="result">
-    <div class="eyebrow">Quiz complete</div><h2 id="resultTitle">Brilliant effort!</h2><p class="lead" id="resultMessage" style="margin:auto"></p>
-    <div class="score-ring" id="scoreRing"><div><span id="scorePercent">0%</span><small>YOUR SCORE</small></div></div>
-    <div class="result-stats"><div class="stat"><strong id="correctStat">0</strong><span>Correct</span></div><div class="stat"><strong id="wrongStat">0</strong><span>To practise</span></div><div class="stat"><strong id="totalStat">15</strong><span>Questions</span></div></div>
-    <div class="review" id="review"></div>
-    <button class="primary" id="againBtn">Play again</button> <button class="secondary" id="homeBtn">Home</button>
-  </div>
-</section>
-</main>
-<footer class="bottom"><span>ROHANS WEB</span><span>COMPUTERS • ELECTRONICS • TECHNOLOGY</span></footer>
-</div>
-<script>
-
-const questions=[
-{c:"computers",q:"Which part is often called the brain of a computer?",a:["Hard drive","CPU","Keyboard","Monitor"],k:1,e:"The CPU (Central Processing Unit) processes instructions and performs calculations."},
-{c:"computers",q:"What does RAM help a computer do?",a:["Store files forever","Print documents","Keep data ready while programs are running","Connect to Wi-Fi"],k:2,e:"RAM is short-term working memory. It holds data the computer is using right now."},
-{c:"computers",q:"Which device is used to move a pointer and click on things?",a:["Mouse","Speaker","Microphone","Printer"],k:0,e:"A mouse is an input device used to move the pointer and select items."},
-{c:"electronics",q:"What is the unit used to measure electrical current?",a:["Volt","Watt","Ampere","Ohm"],k:2,e:"Electric current is measured in amperes, often shortened to amps (A)."},
-{c:"computers",q:"Which of these is an operating system?",a:["Google Chrome","Windows","HDMI","Bluetooth"],k:1,e:"Windows is an operating system. It manages the computer and lets applications run."},
-{c:"electronics",q:"What does a battery provide to a circuit?",a:["Light only","Electrical energy","Internet access","Sound"],k:1,e:"A battery supplies electrical energy to power components in a circuit."},
-{c:"computers",q:"Which storage device has no moving mechanical parts?",a:["DVD drive","Floppy disk","SSD","Tape drive"],k:2,e:"A solid-state drive (SSD) stores data in flash memory and has no spinning disk."},
-{c:"electronics",q:"What is the job of a resistor in a circuit?",a:["Limit the flow of current","Make a battery recharge","Store photographs","Create Wi-Fi"],k:0,e:"A resistor limits current and can help set the voltage in part of a circuit."},
-{c:"computers",q:"What does USB stand for?",a:["Universal Serial Bus","United System Board","User Storage Box","Universal Screen Base"],k:0,e:"USB stands for Universal Serial Bus. It connects devices and can transfer data and power."},
-{c:"electronics",q:"Which component allows current to flow mainly in one direction?",a:["Resistor","Diode","Switch","Capacitor"],k:1,e:"A diode is designed to conduct current mainly in one direction."},
-{c:"computers",q:"Which one is an example of an input device?",a:["Monitor","Projector","Keyboard","Speaker"],k:2,e:"A keyboard sends information into a computer, so it is an input device."},
-{c:"electronics",q:"What happens when a simple series circuit is broken at one point?",a:["Every lamp gets brighter","Current stops throughout the circuit","The battery doubles in power","Nothing changes"],k:1,e:"A series circuit has one path. If that path is broken, current cannot flow anywhere in it."},
-{c:"computers",q:"What is a web browser used for?",a:["Editing the computer's hardware","Opening and viewing websites","Charging a laptop","Cooling the CPU"],k:1,e:"A browser such as Chrome, Firefox or Edge is used to visit and view websites."},
-{c:"electronics",q:"What does an LED do?",a:["Emits light when current flows through it","Stores computer memory","Measures temperature only","Connects a computer to a screen"],k:0,e:"LED means light-emitting diode. It produces light when powered in the correct direction."},
-{c:"computers",q:"What is the main purpose of a computer's motherboard?",a:["Display pictures","Connect and let components communicate","Make the internet faster","Store all files permanently"],k:1,e:"The motherboard is the main circuit board. It connects the CPU, memory, storage and other components."}
-];
-const $=id=>document.getElementById(id);
-let pool=[],index=0,score=0,selected="all",answersLog=[],soundOn=true,player="";
-const correctSound=new Audio("./dragon-studio-correct-472358%20(1).mp3");
-const incorrectSound=new Audio("./u_n2rdb8hxnh-incorrect-293358%20(1).mp3");
-[correctSound,incorrectSound].forEach(a=>{a.preload="auto";a.volume=.85});
-function playAnswerSound(correct){
- if(!soundOn)return;
- const audio=correct?correctSound:incorrectSound;
- try{audio.pause();audio.currentTime=0;const playback=audio.play();if(playback)playback.catch(()=>{})}catch(e){}
-}
-function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));window.scrollTo({top:0,behavior:"smooth"})}
-function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-
-$("startBtn").addEventListener("click",()=>{player=$("playerName").value.trim();show("topics")});
-$("backWelcome").addEventListener("click",()=>show("welcome"));
-document.querySelectorAll(".category").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.category;document.querySelectorAll(".category").forEach(x=>x.classList.toggle("selected",x===b))}));
-$("beginBtn").addEventListener("click",startQuiz);
-function startQuiz(){pool=shuffle(questions.filter(q=>selected==="all"||q.c===selected));index=0;score=0;answersLog=[];show("playing");renderQuestion()}
-function renderQuestion(){const q=pool[index];$("counter").textContent="QUESTION "+(index+1)+" OF "+pool.length;$("scoreChip").textContent="SCORE: "+score;$("progressFill").style.width=(index/pool.length*100)+"%";$("questionCategory").textContent=q.c==="computers"?"COMPUTERS":"ELECTRONICS";$("questionText").textContent=q.q;$("feedback").className="feedback";$("feedback").textContent="";$("nextBtn").disabled=true;$("nextBtn").textContent=index===pool.length-1?"See my results →":"Next question →";$("answers").innerHTML="";q.a.forEach((label,i)=>{const b=document.createElement("button");b.className="answer";const letter=document.createElement("span");letter.className="letter";letter.textContent=String.fromCharCode(65+i);const text=document.createElement("span");text.textContent=label;b.append(letter,text);b.addEventListener("click",()=>choose(i));$("answers").append(b)});$("progressFill").style.width=(index/pool.length*100)+"%"}
-function choose(choice){const q=pool[index],correct=choice===q.k;const buttons=[...$("answers").children];buttons.forEach((b,i)=>{b.disabled=true;if(i===q.k)b.classList.add("correct");if(i===choice&&!correct)b.classList.add("wrong")});if(correct){score++;playAnswerSound(true)}else playAnswerSound(false);answersLog.push({q,choice,correct});$("scoreChip").textContent="SCORE: "+score;$("feedback").textContent=(correct?"Correct! ":"Not quite. ")+q.e;$("feedback").className="feedback show "+(correct?"good":"bad");$("nextBtn").disabled=false;$("progressFill").style.width=((index+1)/pool.length*100)+"%"}
-$("nextBtn").addEventListener("click",()=>{index++;if(index<pool.length)renderQuestion();else showResults()});
-function showResults(){show("results");const total=pool.length,pct=Math.round(score/total*100);$("scorePercent").textContent=pct+"%";$("scoreRing").style.setProperty("--score",pct+"%");$("correctStat").textContent=score;$("wrongStat").textContent=total-score;$("totalStat").textContent=total;const name=player?player+", ":"";$("resultTitle").textContent=pct===100?"Perfect score!":pct>=70?"Brilliant work!":pct>=40?"Good effort!":"Keep exploring!";$("resultMessage").textContent=name+(pct===100?"You got every question right. Amazing technology knowledge!":pct>=70?"You know your tech. Have another go and aim for full marks.":pct>=40?"You are building your technology knowledge. Read the explanations and try again.":"Every question is a chance to learn. Have another go and watch your score grow.");$("review").innerHTML="<strong>Answer review</strong>"+answersLog.map((r,i)=>'<div class="review-row"><strong>'+(i+1)+'. '+escapeHtml(r.q.q)+'</strong><span style="color:'+(r.correct?'#218653':'#b43e34')+'">'+(r.correct?"Correct":"Your answer: "+escapeHtml(r.q.a[r.choice]))+'</span><br><span style="color:#776b63">Answer: '+escapeHtml(r.q.a[r.q.k])+' — '+escapeHtml(r.q.e)+'</span></div>').join("")}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-$("againBtn").addEventListener("click",()=>{show("topics")});$("homeBtn").addEventListener("click",()=>{player="";$("playerName").value="";show("welcome")});
-$("soundBtn").textContent="♫";$("soundBtn").title="Sound on";
-$("soundBtn").addEventListener("click",()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"♫":"♪";$("soundBtn").title=soundOn?"Sound on":"Sound off";if(!soundOn){correctSound.pause();incorrectSound.pause()} });
-$("fullBtn").addEventListener("click",async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}});
-document.addEventListener("keydown",e=>{if(!$("playing").classList.contains("active"))return;if(["1","2","3","4"].includes(e.key)&&!$("nextBtn").disabled){return}if(["1","2","3","4"].includes(e.key)&&$("nextBtn").disabled){const b=$("answers").children[Number(e.key)-1];if(b)b.click()}if(e.key==="Enter"&&!$("nextBtn").disabled)$("nextBtn").click()});
-</script>
-</body>
-</html>
+:root{--orange:#f47721;--deep:#d94c16;--ink:#28211d}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Google Sans Flex","Google Sans",Arial,sans-serif;color:var(--ink);background:#f47721 url('../../../Orange%20And%20White%20Colorful%20Quiz%20Interactive%20Presentation%20(Presentation).jpg') center/cover fixed no-repeat;position:relative}
+body:before{content:"";position:fixed;inset:0;background:linear-gradient(135deg,rgba(255,145,49,.48),rgba(255,255,255,.22) 48%,rgba(232,83,26,.4));pointer-events:none}
+.symbol{font-family:"Material Symbols Rounded";font-weight:normal;font-style:normal;font-size:24px;line-height:1;display:inline-flex;vertical-align:middle;font-feature-settings:"liga";-webkit-font-smoothing:antialiased}
+header,main,footer{position:relative;z-index:1}.top{height:78px;display:flex;align-items:center;justify-content:space-between;max-width:1180px;margin:auto;padding:0 26px}
+.brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:750;letter-spacing:-.8px}.brand-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;color:white;background:linear-gradient(145deg,#ff9a37,#e94c1b);box-shadow:0 7px 18px #9b3d1b38}.brand-icon .symbol{font-size:26px}
+.top-link{color:#7a3519;text-decoration:none;font-weight:700;padding:11px 15px;border-radius:12px;background:#ffffff9c;border:1px solid #fff9}
+main{max-width:1180px;margin:auto;padding:7vh 26px 5vh}.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:5vw;min-height:56vh}
+.kicker{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:30px;background:#fff9;color:#9b461d;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+h1{font-size:clamp(54px,8vw,100px);line-height:.92;letter-spacing:-5px;margin:23px 0 20px;color:#2b211b}h1 span{color:#e75d1b}
+.lead{font-size:clamp(17px,2vw,21px);line-height:1.55;color:#634a3b;max-width:540px;margin:0 0 30px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;padding:15px 21px;border-radius:14px;font-weight:800;transition:transform .18s,box-shadow .18s}.btn:hover{transform:translateY(-3px);box-shadow:0 12px 24px #8e3a1c24}.primary{background:linear-gradient(100deg,#ff922e,#ed5b1b);color:white;box-shadow:0 8px 20px #ed641f40}.secondary{background:#ffffffdf;color:#6d351d;border:1px solid #fff}
+.art{min-height:340px;border-radius:30px;background:linear-gradient(145deg,#ffb347,#f47721 55%,#d94c16);box-shadow:0 28px 65px #78300c3d;position:relative;overflow:hidden;display:grid;place-items:center;border:1px solid #ffffff8c}
+.art:before,.art:after{content:"";position:absolute;border:1px solid #ffffff70;border-radius:50%;width:270px;height:270px}.art:before{transform:translate(-95px,100px)}.art:after{width:190px;height:190px;transform:translate(125px,-105px)}
+.art-icon{width:170px;height:170px;border-radius:42px;background:#ffffffdf;color:#e85c1b;display:grid;place-items:center;box-shadow:0 18px 45px #762b1244;transform:rotate(-7deg);z-index:1}.art-icon .symbol{font-size:100px}
+.art-label{position:absolute;bottom:24px;left:26px;color:white;font-weight:800;letter-spacing:1.5px;font-size:12px;z-index:2}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:36px}
+.card{display:flex;gap:17px;align-items:center;padding:21px;background:#ffffffdf;border:1px solid #fff;border-radius:20px;box-shadow:0 12px 30px #79340e18;text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 35px #79340e26}.card-icon{width:52px;height:52px;flex:0 0 52px;border-radius:16px;background:#fff0e5;color:#e65b1c;display:grid;place-items:center}.card-icon .symbol{font-size:29px}
+.card strong{display:block;font-size:17px;margin-bottom:4px}.card small{color:#76675e;font-size:13px}.arrow{margin-left:auto;color:#d65a20}
+footer{max-width:1180px;margin:0 auto;padding:24px 26px 30px;color:#78472e;font-size:12px}
+@media(max-width:760px){.top{height:68px;padding:0 18px}main{padding:5vh 18px 3vh}.hero{grid-template-columns:1fr;gap:28px}.art{min-height:210px;order:-1}.art-icon{width:115px;height:115px;border-radius:30px}.art-icon .symbol{font-size:70px}h1{letter-spacing:-3px;margin:17px 0}.cards{grid-template-columns:1fr;margin-top:26px}.lead{margin-bottom:23px}.top-link{font-size:13px}}
+</style></head><body>
+<header><div class="top"><div class="brand"><span class="brand-icon"><span class="symbol">quiz</span></span>Quizzer</div><a class="top-link" href="./quiz.html">Open the quiz <span class="symbol">arrow_outward</span></a></div></header>
+<main><section class="hero"><div><div class="kicker"><span class="symbol">auto_awesome</span> Think • Play • Learn</div><h1>Ready to put your <span>brain</span> to the test?</h1><p class="lead">Welcome to Quizzer — explore technology, discover how computers help us every day, and see what you know.</p><div class="actions"><a class="btn primary" href="./quiz.html"><span class="symbol">play_arrow</span> Start the quiz</a><a class="btn secondary" href="./presentation.html"><span class="symbol">slideshow</span> View presentation</a></div></div><div class="art"><div class="art-icon"><span class="symbol">psychology</span></div><div class="art-label">YOUR NEXT BIG QUIZ ADVENTURE</div></div></section>
+<section class="cards" aria-label="Explore Quizzer"><a class="card" href="./quiz.html"><span class="card-icon"><span class="symbol">quiz</span></span><span><strong>Play the quiz</strong><small>Answer questions and test your knowledge.</small></span><span class="symbol arrow">arrow_forward</span></a><a class="card" href="./presentation.html"><span class="card-icon"><span class="symbol">present_to_all</span></span><span><strong>Explore the presentation</strong><small>Learn about computers in everyday life.</small></span><span class="symbol arrow">arrow_forward</span></a></section></main>
+<footer>Quizzer · Computers in Our Everyday Lives</footer></body></html>
