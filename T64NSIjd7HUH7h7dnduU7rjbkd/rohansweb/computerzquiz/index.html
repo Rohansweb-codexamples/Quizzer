@@ -162,22 +162,31 @@ const questions=[
 {c:"computers",q:"What is the main purpose of a computer's motherboard?",a:["Display pictures","Connect and let components communicate","Make the internet faster","Store all files permanently"],k:1,e:"The motherboard is the main circuit board. It connects the CPU, memory, storage and other components."}
 ];
 const $=id=>document.getElementById(id);
-let pool=[],index=0,score=0,selected="all",answersLog=[],soundOn=false,audioCtx=null,player="";
+let pool=[],index=0,score=0,selected="all",answersLog=[],soundOn=true,player="";
+const correctSound=new Audio("./dragon-studio-correct-472358%20(1).mp3");
+const incorrectSound=new Audio("./u_n2rdb8hxnh-incorrect-293358%20(1).mp3");
+[correctSound,incorrectSound].forEach(a=>{a.preload="auto";a.volume=.85});
+function playAnswerSound(correct){
+ if(!soundOn)return;
+ const audio=correct?correctSound:incorrectSound;
+ try{audio.pause();audio.currentTime=0;const playback=audio.play();if(playback)playback.catch(()=>{})}catch(e){}
+}
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));window.scrollTo({top:0,behavior:"smooth"})}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function beep(freq=540,duration=.09){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=freq;o.connect(g);g.connect(audioCtx.destination);g.gain.setValueAtTime(.07,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.start();o.stop(audioCtx.currentTime+duration)}catch(e){}}
+
 $("startBtn").addEventListener("click",()=>{player=$("playerName").value.trim();show("topics")});
 $("backWelcome").addEventListener("click",()=>show("welcome"));
 document.querySelectorAll(".category").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.category;document.querySelectorAll(".category").forEach(x=>x.classList.toggle("selected",x===b))}));
 $("beginBtn").addEventListener("click",startQuiz);
 function startQuiz(){pool=shuffle(questions.filter(q=>selected==="all"||q.c===selected));index=0;score=0;answersLog=[];show("playing");renderQuestion()}
 function renderQuestion(){const q=pool[index];$("counter").textContent="QUESTION "+(index+1)+" OF "+pool.length;$("scoreChip").textContent="SCORE: "+score;$("progressFill").style.width=(index/pool.length*100)+"%";$("questionCategory").textContent=q.c==="computers"?"COMPUTERS":"ELECTRONICS";$("questionText").textContent=q.q;$("feedback").className="feedback";$("feedback").textContent="";$("nextBtn").disabled=true;$("nextBtn").textContent=index===pool.length-1?"See my results →":"Next question →";$("answers").innerHTML="";q.a.forEach((label,i)=>{const b=document.createElement("button");b.className="answer";const letter=document.createElement("span");letter.className="letter";letter.textContent=String.fromCharCode(65+i);const text=document.createElement("span");text.textContent=label;b.append(letter,text);b.addEventListener("click",()=>choose(i));$("answers").append(b)});$("progressFill").style.width=(index/pool.length*100)+"%"}
-function choose(choice){const q=pool[index],correct=choice===q.k;const buttons=[...$("answers").children];buttons.forEach((b,i)=>{b.disabled=true;if(i===q.k)b.classList.add("correct");if(i===choice&&!correct)b.classList.add("wrong")});if(correct){score++;beep(760)}else beep(220);answersLog.push({q,choice,correct});$("scoreChip").textContent="SCORE: "+score;$("feedback").textContent=(correct?"Correct! ":"Not quite. ")+q.e;$("feedback").className="feedback show "+(correct?"good":"bad");$("nextBtn").disabled=false;$("progressFill").style.width=((index+1)/pool.length*100)+"%"}
+function choose(choice){const q=pool[index],correct=choice===q.k;const buttons=[...$("answers").children];buttons.forEach((b,i)=>{b.disabled=true;if(i===q.k)b.classList.add("correct");if(i===choice&&!correct)b.classList.add("wrong")});if(correct){score++;playAnswerSound(true)}else playAnswerSound(false);answersLog.push({q,choice,correct});$("scoreChip").textContent="SCORE: "+score;$("feedback").textContent=(correct?"Correct! ":"Not quite. ")+q.e;$("feedback").className="feedback show "+(correct?"good":"bad");$("nextBtn").disabled=false;$("progressFill").style.width=((index+1)/pool.length*100)+"%"}
 $("nextBtn").addEventListener("click",()=>{index++;if(index<pool.length)renderQuestion();else showResults()});
 function showResults(){show("results");const total=pool.length,pct=Math.round(score/total*100);$("scorePercent").textContent=pct+"%";$("scoreRing").style.setProperty("--score",pct+"%");$("correctStat").textContent=score;$("wrongStat").textContent=total-score;$("totalStat").textContent=total;const name=player?player+", ":"";$("resultTitle").textContent=pct===100?"Perfect score!":pct>=70?"Brilliant work!":pct>=40?"Good effort!":"Keep exploring!";$("resultMessage").textContent=name+(pct===100?"You got every question right. Amazing technology knowledge!":pct>=70?"You know your tech. Have another go and aim for full marks.":pct>=40?"You are building your technology knowledge. Read the explanations and try again.":"Every question is a chance to learn. Have another go and watch your score grow.");$("review").innerHTML="<strong>Answer review</strong>"+answersLog.map((r,i)=>'<div class="review-row"><strong>'+(i+1)+'. '+escapeHtml(r.q.q)+'</strong><span style="color:'+(r.correct?'#218653':'#b43e34')+'">'+(r.correct?"Correct":"Your answer: "+escapeHtml(r.q.a[r.choice]))+'</span><br><span style="color:#776b63">Answer: '+escapeHtml(r.q.a[r.q.k])+' — '+escapeHtml(r.q.e)+'</span></div>').join("")}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 $("againBtn").addEventListener("click",()=>{show("topics")});$("homeBtn").addEventListener("click",()=>{player="";$("playerName").value="";show("welcome")});
-$("soundBtn").addEventListener("click",()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"♫":"♪";$("soundBtn").title=soundOn?"Sound on":"Sound off";if(soundOn)beep()});
+$("soundBtn").textContent="♫";$("soundBtn").title="Sound on";
+$("soundBtn").addEventListener("click",()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"♫":"♪";$("soundBtn").title=soundOn?"Sound on":"Sound off";if(!soundOn){correctSound.pause();incorrectSound.pause()} });
 $("fullBtn").addEventListener("click",async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}});
 document.addEventListener("keydown",e=>{if(!$("playing").classList.contains("active"))return;if(["1","2","3","4"].includes(e.key)&&!$("nextBtn").disabled){return}if(["1","2","3","4"].includes(e.key)&&$("nextBtn").disabled){const b=$("answers").children[Number(e.key)-1];if(b)b.click()}if(e.key==="Enter"&&!$("nextBtn").disabled)$("nextBtn").click()});
 </script>
