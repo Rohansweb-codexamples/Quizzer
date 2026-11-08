@@ -39,7 +39,8 @@ function show(i,broadcast=true){current=Math.max(0,Math.min(slides.length-1,i));
 fullscreenBtn.addEventListener("click",async()=>{try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen()}else{await document.exitFullscreen()}}catch(e){fullscreenBtn.textContent="Full screen unavailable"}});document.addEventListener("fullscreenchange",()=>{const active=!!document.fullscreenElement;document.body.classList.toggle("is-fullscreen",active);fullscreenBtn.textContent=active?"":"Click for full screen"});
 stage.addEventListener("touchstart",e=>{if(e.touches.length!==1)return;touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY;},{passive:true});
 stage.addEventListener("touchend",e=>{if(!touchStartX&&!touchStartY)return;const t=e.changedTouches[0],dx=t.clientX-touchStartX,dy=t.clientY-touchStartY;touchStartX=0;touchStartY=0;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.25)show(current+(dx<0?1:-1));},{passive:true});
-stage.addEventListener("pointerup",()=>{const now=Date.now();if(now-lastTap>900)tapCount=0;lastTap=now;tapCount++;if(tapCount>=3){tapCount=0;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});}});\ndocument.addEventListener("keydown",e=>{if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();show(current+1)}if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();show(current-1)}});
+stage.addEventListener("pointerup",()=>{const now=Date.now();if(now-lastTap>900)tapCount=0;lastTap=now;tapCount++;if(tapCount>=3){tapCount=0;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});}});
+document.addEventListener("keydown",e=>{if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();show(current+1)}if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();show(current-1)}});
 if(channel)channel.onmessage=e=>{if(e.data&&e.data.type==="slide")show(e.data.index,false)};
 window.addEventListener("storage",e=>{if(e.key==="computerz-slide"&&e.newValue!==null)show(Number(e.newValue),false)});
 document.addEventListener("click",e=>{
@@ -58,7 +59,8 @@ document.addEventListener("click",e=>{
   if(feedback)feedback.textContent=b.dataset.correct==="true"?"Correct! Great thinking.":"Not quite. The highlighted answer is the best choice. Have another think!";
  }
 });
-\nwindow.parent!==window&&window.parent.postMessage({type:"computerz-preview-ready"},"*");
+
+window.parent!==window&&window.parent.postMessage({type:"computerz-preview-ready"},"*");
 let initial=0;try{initial=Number(localStorage.getItem("computerz-slide")||0)}catch(e){}show(initial,false);
 })();
 </script></body></html>
