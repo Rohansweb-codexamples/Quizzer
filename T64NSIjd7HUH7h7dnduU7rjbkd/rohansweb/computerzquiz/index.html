@@ -137,7 +137,7 @@ h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:8px 0 12px}
       <p class="lead">Test your knowledge of computers, gadgets and electronics. Choose a topic, answer the questions and see how high you can score.</p>
       <input class="name-input" id="playerName" maxlength="24" placeholder="Enter your name (optional)" aria-label="Your name">
       <div class="meta-row"><span class="pill">15 questions</span><span class="pill">Instant feedback</span><span class="pill">All ages</span></div>
-      <button class="primary" id="startBtn">Start the quiz <span aria-hidden="true">→</span></button> <button class="secondary" id="openPresentation">View presentation</button>
+      <button class="primary" id="startBtn">Start the quiz <span aria-hidden="true">→</span></button> <button class="secondary" id="openPresentation">Open presentation ↗</button> <button class="secondary" id="openPresenter">Presenter view ↗</button>
     </div>
     <div class="hero-art"><div class="chip">TECH</div><div class="art-caption">THINK • CLICK • DISCOVER</div></div>
   </div>
@@ -258,8 +258,8 @@ function renderSlide(){
  $("prevSlide").style.opacity=currentSlide===0?".45":"1";
  $("nextSlide").textContent=currentSlide===presentationSlides.length-1?"Start quiz →":"Next →";
 }
-function openPresentation(){currentSlide=0;renderSlide();show("presentation")}
-$("openPresentation").addEventListener("click",openPresentation);
+function openPresentation(){window.location.href="./presentation.html"}
+$("openPresentation").addEventListener("click",openPresentation);\n$("openPresenter").addEventListener("click",()=>window.location.href="./presenter.html");
 $("exitPresentation").addEventListener("click",()=>show("welcome"));
 $("prevSlide").addEventListener("click",()=>{if(currentSlide>0){currentSlide--;renderSlide()}});
 $("nextSlide").addEventListener("click",()=>{if(currentSlide<presentationSlides.length-1){currentSlide++;renderSlide()}else{show("topics")}});
