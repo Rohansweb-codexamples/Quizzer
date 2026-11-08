@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f47721"><title>Science Quizzes | Three Seeds</title>
+<style>
+:root{--o:#f47721;--d:#d94c16;--ink:#30241e;--muted:#76685e}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;color:var(--ink);background:#f47721 url('../../../Orange%20And%20White%20Colorful%20Quiz%20Interactive%20Presentation%20(Presentation).jpg') center/cover fixed}body:before{content:"";position:fixed;inset:0;background:linear-gradient(125deg,#ff9634a8,#fff9 52%,#e64f1b99);pointer-events:none}.app{position:relative;width:min(1050px,calc(100% - 28px));min-height:calc(100vh - 28px);margin:14px auto;background:#fffefaF2;border:1px solid white;border-radius:24px;box-shadow:0 20px 65px #79300e33;overflow:hidden;display:flex;flex-direction:column}.top{padding:18px 25px;border-bottom:1px solid #f1e2d7;display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-weight:900}.brand small{display:block;color:#a45b32;font-size:10px;letter-spacing:1.5px;margin-top:4px}.top a{color:#a84d1d;text-decoration:none;font-weight:800;font-size:13px}main{width:min(850px,100%);margin:auto;padding:30px}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--d);font-weight:900}h1{font-size:clamp(36px,6vw,64px);letter-spacing:-2px;line-height:1;margin:12px 0}h2{font-size:clamp(24px,4vw,36px);margin:10px 0}.lead{color:var(--muted);line-height:1.6}.topics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}.topic{border:1px solid #efdfd3;background:white;border-radius:15px;padding:16px;text-align:left;cursor:pointer;min-height:115px;color:var(--ink)}.topic:hover,.topic.active{border:2px solid var(--o);background:#fff6ee;padding:15px}.topic b{display:block;font-size:16px;margin:8px 0}.topic small{color:var(--muted);line-height:1.4}.num{color:var(--o);font-weight:900;font-size:12px}.btn{border:0;border-radius:12px;padding:14px 21px;background:linear-gradient(100deg,#ff962e,#e9531b);color:white;font-weight:900;cursor:pointer}.btn:disabled{opacity:.4;cursor:not-allowed}.outline{border:1px solid #ead9cd;background:white;color:#5c4c41;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer}.screen{display:none}.screen.active{display:block}.bar{height:8px;border-radius:20px;background:#f2e6de;overflow:hidden;margin:18px 0 24px}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff9b38,#e9511d);transition:width .2s}.qhead{display:flex;justify-content:space-between;gap:12px;color:#9b5935;font-weight:800;font-size:12px}.qcard{padding:25px;border:1px solid #efdfd4;background:#fff;border-radius:18px}.question{font-size:clamp(21px,3.2vw,29px);font-weight:900;line-height:1.3;margin:16px 0 22px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}.answer{padding:15px;border:1.5px solid #eadfd7;border-radius:12px;background:#fff;text-align:left;cursor:pointer;min-height:60px;font-weight:700;color:#3e342d}.answer:hover:not(:disabled){border-color:var(--o);background:#fff8f2}.answer:disabled{cursor:default}.answer.correct{background:#eaf8ef;border-color:#5aab79;color:#17633d}.answer.wrong{background:#fff0ed;border-color:#d77c70;color:#9c3027}.feedback{min-height:25px;margin-top:15px;font-weight:800;font-size:14px}.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}.result{text-align:center}.score{font-size:70px;font-weight:900;color:var(--o);margin:15px}.hidden{display:none!important}@media(max-width:650px){main{padding:22px 17px}.topics{grid-template-columns:1fr 1fr}.answers{grid-template-columns:1fr}.qcard{padding:19px}.top{padding:15px 17px}}@media(max-width:390px){.topics{grid-template-columns:1fr}.topic{min-height:85px}}
+</style></head><body><div class="app"><header class="top"><div class="brand">THREE SEEDS <small>SCIENCE CHALLENGES</small></div><a href="../../../index.html">Back to home</a></header><main>
+<section class="screen active" id="choose"><div class="eyebrow">Explore science</div><h1>Pick your <span style="color:#e65b1c">challenge.</span></h1><p class="lead">Choose a science topic, answer 10 questions and see what you have learned. Every answer includes a quick explanation.</p><div class="topics" id="topics"></div><button class="btn" id="start" disabled>Start this quiz</button></section>
+<section class="screen" id="play"><div class="qhead"><span id="topicName">SCIENCE</span><span id="count">QUESTION 1 OF 10</span><span id="score">SCORE 0</span></div><div class="bar"><span id="progress"></span></div><div class="qcard"><div class="eyebrow" id="tag">SCIENCE</div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback" aria-live="polite"></div></div><div class="foot"><button class="outline" id="quit">Topics</button><button class="btn" id="next" disabled>Next question</button></div></section>
+<section class="screen" id="done"><div class="result"><div class="eyebrow">Challenge complete</div><h2 id="resultTitle">Well done!</h2><div class="score" id="finalScore">0/10</div><p class="lead" id="message"></p><button class="btn" id="again">Try this topic again</button> <button class="outline" id="other">Choose another topic</button></div></section>
+</main></div>
+<script>
+const BANK={
+"Biology":{desc:"Cells, organs and living things",q:[
+["What is the basic building block of living organisms?",["A cell","A rock","A planet","A cloud"],0,"Cells are the smallest units that make up living organisms."],
+["Which organ pumps blood around the human body?",["Lungs","Heart","Stomach","Brain"],1,"The heart is a muscular pump that moves blood around the body."],
+["What gas do humans need for respiration?",["Carbon dioxide","Helium","Oxygen","Nitrogen"],2,"Cells use oxygen to release energy from food during aerobic respiration."],
+["Where does most photosynthesis happen in a plant?",["Roots","Flowers","Leaves","Seeds"],2,"Leaves contain chloroplasts with chlorophyll to absorb light."],
+["Which part of a cell contains most of its genetic material?",["Nucleus","Cell wall","Vacuole","Membrane"],0,"The nucleus contains the chromosomes in most plant and animal cells."],
+["What is the name for animals that eat only plants?",["Carnivores","Herbivores","Omnivores","Decomposers"],1,"Herbivores feed on plants."],
+["Which system helps the body fight infection?",["Digestive","Skeletal","Immune","Nervous"],2,"The immune system detects and helps defend against pathogens."],
+["What do bees help many flowering plants do?",["Pollinate","Hibernate","Digest","Respire"],0,"Bees transfer pollen between flowers, helping plants reproduce."],
+["Which nutrient is especially important for building and repairing muscles?",["Protein","Water","Fibre","Salt"],0,"Protein supplies amino acids used to build and repair tissues."],
+["What is an organism's natural home called?",["Habitat","Climate","Galaxy","Mineral"],0,"A habitat provides an organism with the conditions and resources it needs."]
+]},
+"Chemistry":{desc:"Materials, atoms and reactions",q:[
+["What is the chemical symbol for water?",["CO2","H2O","O2","NaCl"],1,"A water molecule contains two hydrogen atoms and one oxygen atom."],
+["What is the centre of an atom called?",["Electron","Nucleus","Shell","Bond"],1,"The nucleus contains protons and usually neutrons."],
+["Which state of matter has a fixed shape?",["Gas","Liquid","Solid","Plasma only"],2,"A solid keeps its own shape unless a force changes it."],
+["What is the pH of a neutral solution at room temperature?",["1","7","10","14"],1,"A neutral solution has a pH of 7 at about 25°C."],
+["Which gas is released by plants during photosynthesis?",["Oxygen","Nitrogen","Helium","Methane"],0,"Oxygen is released as a product of photosynthesis."],
+["What is table salt's chemical name?",["Calcium carbonate","Sodium chloride","Copper sulfate","Hydrogen peroxide"],1,"Table salt is sodium chloride, with the formula NaCl."],
+["What happens to particles when a substance is heated?",["They usually move faster","They disappear","They become smaller atoms","They stop moving"],0,"Heating usually increases the particles' kinetic energy."],
+["Which is a method of separating an insoluble solid from a liquid?",["Filtering","Freezing only","Magnetising water","Burning"],0,"Filtration traps the insoluble solid while liquid passes through."],
+["What is the symbol for oxygen?",["Ox","O","Og","Oy"],1,"The chemical symbol for oxygen is O."],
+["A reaction that gives out heat is called…",["Endothermic","Exothermic","Neutral","Reversible only"],1,"Exothermic reactions transfer energy to the surroundings, often as heat."]
+]},
+"Physics":{desc:"Forces, energy, light and sound",q:[
+["What is the unit of force?",["Watt","Newton","Joule","Volt"],1,"Force is measured in newtons (N)."],
+["What force pulls objects towards Earth?",["Friction","Magnetism","Gravity","Upthrust"],2,"Earth's gravity attracts objects towards its centre."],
+["Which energy store increases when a book is lifted?",["Chemical","Gravitational potential","Nuclear","Elastic only"],1,"Raising an object increases its gravitational potential energy."],
+["What is the speed formula?",["Distance ÷ time","Time ÷ distance","Mass × volume","Force ÷ energy"],0,"Average speed equals distance travelled divided by time taken."],
+["Which travels faster in a vacuum?",["Sound","Light","They are equal","Neither travels"],1,"Light travels through a vacuum; sound needs a material medium."],
+["What is the unit of electrical current?",["Ampere","Ohm","Watt","Metre"],0,"Electric current is measured in amperes (A)."],
+["What happens to light when it reflects?",["It bounces off a surface","It turns into sound","It stops existing","It becomes heavier"],0,"Reflection is the bouncing back of light from a surface."],
+["Which material is usually a good electrical conductor?",["Rubber","Plastic","Copper","Wood"],2,"Copper has mobile electrons that allow current to flow easily."],
+["What type of wave is sound in air?",["Transverse","Longitudinal","Electromagnetic","Radioactive"],1,"Sound in air travels as compressions and rarefactions."],
+["What does a fuse help protect against?",["Excessive current","Low light","Gravity","Cold air"],0,"A fuse melts and breaks a circuit if current becomes too high."]
+]},
+"Space":{desc:"The Solar System and beyond",q:[
+["Which star is closest to Earth?",["Sirius","The Sun","Polaris","Proxima Centauri"],1,"The Sun is our nearest star."],
+["Which planet is known as the Red Planet?",["Venus","Mars","Jupiter","Mercury"],1,"Iron-rich dust gives Mars much of its reddish appearance."],
+["Which planet has the most prominent ring system?",["Saturn","Earth","Mars","Mercury"],0,"Saturn's bright rings are made mostly of ice and rocky particles."],
+["What is Earth's natural satellite?",["The Moon","The Sun","Phobos","Titan"],0,"The Moon orbits Earth and reflects sunlight."],
+["What force keeps planets in orbit around the Sun?",["Friction","Gravity","Sound","Static electricity"],1,"The Sun's gravity continually changes the direction of a planet's motion."],
+["What is a galaxy?",["A single planet","A large collection of stars, gas and dust","A type of moon","A space rocket"],1,"Galaxies contain stars, stellar remnants, gas, dust and dark matter."],
+["Which planet is the largest in our Solar System?",["Neptune","Earth","Jupiter","Saturn"],2,"Jupiter is the largest planet in the Solar System."],
+["What causes day and night on Earth?",["Earth's rotation","The Moon's shadow every day","The Sun orbiting Earth","Clouds"],0,"Earth rotates once roughly every 24 hours."],
+["What is a light-year a measure of?",["Time","Distance","Brightness","Temperature"],1,"A light-year is the distance light travels in one year."],
+["What is the name of our galaxy?",["Andromeda","Milky Way","Whirlpool","Sombrero"],1,"Our Solar System is in the Milky Way galaxy."]
+]},
+"Earth Science":{desc:"Rocks, weather, climate and oceans",q:[
+["What is molten rock beneath Earth's surface called?",["Lava","Magma","Ash","Granite"],1,"Molten rock underground is magma; at the surface it is lava."],
+["What is the water cycle process where liquid water becomes vapour?",["Condensation","Evaporation","Precipitation","Freezing"],1,"Evaporation changes liquid water into water vapour."],
+["Which layer of Earth do we live on?",["Inner core","Outer core","Crust","Lower mantle"],2,"The crust is Earth's thin, solid outer layer."],
+["What instrument measures air temperature?",["Barometer","Thermometer","Anemometer","Rain gauge"],1,"A thermometer measures temperature."],
+["What causes most ocean tides on Earth?",["The Moon's gravity","Volcanoes","Clouds","Earthquakes"],0,"The Moon's gravitational pull is the main driver of tides."],
+["Which rock forms when magma or lava cools?",["Igneous","Sedimentary","Metamorphic","Chalk only"],0,"Igneous rocks form when molten rock cools and solidifies."],
+["What is the long-term average pattern of weather called?",["Climate","Forecast","Season","Humidity"],0,"Climate describes typical weather patterns over long periods."],
+["What gas makes up most of Earth's atmosphere?",["Oxygen","Carbon dioxide","Nitrogen","Hydrogen"],2,"About 78% of dry air is nitrogen."],
+["What is the name for water falling from clouds?",["Evaporation","Precipitation","Condensation","Transpiration"],1,"Rain, snow, sleet and hail are forms of precipitation."],
+["Which natural event is measured using a seismometer?",["Earthquake","Hurricane","Drought","Tide"],0,"Seismometers detect ground motion caused by earthquakes and other events."]
+]},
+"Animals & Habitats":{desc:"Adaptations, food chains and ecosystems",q:[
+["What is an animal that eats both plants and animals called?",["Herbivore","Carnivore","Omnivore","Producer"],2,"Omnivores eat both plant and animal material."],
+["What is camouflage useful for?",["Hiding or blending in","Making food","Growing roots","Producing oxygen"],0,"Camouflage can help animals avoid predators or approach prey."],
+["Which organism is a producer in a food chain?",["Grass","Rabbit","Fox","Hawk"],0,"Green plants make their own food using photosynthesis."],
+["What do decomposers do?",["Break down dead material","Make sunlight","Stop all decay","Create rocks"],0,"Fungi and bacteria recycle nutrients by breaking down dead matter."],
+["What is biodiversity?",["Variety of life","Amount of rainfall","Number of rocks","A type of weather"],0,"Biodiversity is the variety of living organisms in an area or on Earth."],
+["Which habitat is usually very cold and treeless?",["Tundra","Tropical rainforest","Coral reef","Desert oasis"],0,"Arctic and alpine tundra have low temperatures and few trees."],
+["What is a predator?",["An animal that hunts other animals","A plant that makes seeds","An animal that only eats grass","A decomposer"],0,"Predators hunt and eat other organisms called prey."],
+["What do we call the role of an organism in its ecosystem?",["Niche","Orbit","Crust","Cell"],0,"An ecological niche describes how an organism lives and interacts with its environment."],
+["Which animal is an amphibian?",["Frog","Eagle","Shark","Lizard"],0,"Frogs are amphibians and usually have life stages in water and on land."],
+["Why are pollinators important?",["They help plants reproduce","They make rocks","They stop photosynthesis","They create tides"],0,"Pollinators transfer pollen, allowing many flowering plants to produce seeds."]
+]},
+"Human Body":{desc:"Organs, senses, health and body systems",q:[
+["Which organ controls and coordinates the body?",["Brain","Liver","Kidney","Lung"],0,"The brain processes information and coordinates many body functions."],
+["Where does oxygen enter the blood?",["Lungs","Stomach","Bladder","Bones"],0,"Oxygen moves from air sacs in the lungs into nearby blood capillaries."],
+["How many chambers does a human heart have?",["Two","Three","Four","Five"],2,"The human heart has two atria and two ventricles."],
+["Which bones protect the brain?",["Ribs","Skull","Femur","Spine"],1,"The skull surrounds and protects the brain."],
+["Which organ helps digest food using acid?",["Stomach","Heart","Lung","Skin"],0,"The stomach mixes food with acid and digestive enzymes."],
+["What carries messages between the brain and body?",["Nerves","Tendons only","Hair","Cartilage"],0,"Nerves carry electrical signals around the nervous system."],
+["Which blood cells help fight infection?",["White blood cells","Red blood cells","Platelets","All plasma"],0,"White blood cells help the immune system defend against pathogens."],
+["What is the largest organ of the human body?",["Skin","Liver","Brain","Heart"],0,"The skin covers and protects the body's outer surface."],
+["Which nutrient is the body's main quick energy source?",["Carbohydrate","Vitamin C","Water","Mineral salts"],0,"Carbohydrates are broken down into sugars such as glucose for energy."],
+["What do kidneys help remove from the blood?",["Waste products and excess water","Oxygen","Bones","Muscle"],0,"Kidneys filter blood and produce urine containing waste and excess water."]
+]},
+"Plants":{desc:"Photosynthesis, roots, seeds and growth",q:[
+["What do roots mainly absorb from soil?",["Water and minerals","Sunlight","Oxygen only","Pollen"],0,"Roots absorb water and dissolved mineral ions."],
+["Which pigment makes most leaves look green?",["Chlorophyll","Haemoglobin","Melanin","Keratin"],0,"Chlorophyll reflects green light and absorbs other wavelengths for photosynthesis."],
+["What is the movement of pollen to a flower's stigma called?",["Pollination","Germination","Respiration","Evaporation"],0,"Pollination transfers pollen to the stigma of a flower."],
+["What does a seed need to germinate?",["Water, oxygen and suitable warmth","Only darkness","Only soil","Salt water and ice"],0,"Many seeds need water, oxygen and a suitable temperature to germinate."],
+["Which part of a plant usually supports leaves and transports water?",["Stem","Petal","Root hair only","Seed coat"],0,"The stem supports the plant and contains transport tissues."],
+["What gas do plants take in for photosynthesis?",["Carbon dioxide","Oxygen","Helium","Neon"],0,"Plants take in carbon dioxide, usually through tiny pores in leaves."],
+["What is transpiration?",["Water vapour leaving plant leaves","Roots making seeds","Flowers opening","Pollen moving"],0,"Transpiration is water loss as vapour, mainly through leaf stomata."],
+["Which part of a flower can develop into a fruit?",["Ovary","Petal","Anther","Sepal"],0,"After fertilisation, the ovary can develop into a fruit."],
+["What is the first root to emerge from a germinating seed?",["Radicle","Petal","Stamen","Leaf blade"],0,"The radicle is the embryonic root."],
+["Why are leaves often broad and flat?",["To capture light","To dig into soil","To store rocks","To absorb sound"],0,"A broad surface helps leaves capture sunlight for photosynthesis."]
+]}
+};
+let selected="Biology",questions=[],index=0,score=0,answered=false;
+const $=id=>document.getElementById(id);
+function screen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id))}
+function buildTopics(){const el=$("topics");Object.entries(BANK).forEach(([name,data],i)=>{const b=document.createElement("button");b.className="topic"+(name===selected?" active":"");b.innerHTML='<span class="num">TOPIC '+String(i+1).padStart(2,"0")+'</span><b>'+name+'</b><small>'+data.desc+'</small>';b.onclick=()=>{selected=name;document.querySelectorAll(".topic").forEach(x=>x.classList.remove("active"));b.classList.add("active");$("start").disabled=false};el.append(b)})}
+function start(){questions=[...BANK[selected].q].sort(()=>Math.random()-.5);index=0;score=0;screen("play");render()}
+function render(){answered=false;const q=questions[index];$("topicName").textContent=selected.toUpperCase();$("tag").textContent=selected.toUpperCase();$("count").textContent='QUESTION '+(index+1)+' OF '+questions.length;$("score").textContent='SCORE '+score;$("question").textContent=q[0];$("progress").style.width=(index/questions.length*100)+'%';$("feedback").textContent='';$("next").disabled=true;$("next").textContent=index===questions.length-1?'See results':'Next question';const a=$("answers");a.innerHTML='';q[1].forEach((txt,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=txt;b.onclick=()=>choose(i);a.append(b)})}
+function choose(n){if(answered)return;answered=true;const q=questions[index];const buttons=[...$("answers").children];buttons.forEach((b,i)=>{b.disabled=true;if(i===q[2])b.classList.add("correct");if(i===n&&i!==q[2])b.classList.add("wrong")});if(n===q[2]){score++;$("feedback").textContent='Correct! '+q[3]}else $("feedback").textContent='Not quite. '+q[3];$("score").textContent='SCORE '+score;$("next").disabled=false;$("progress").style.width=((index+1)/questions.length*100)+'%'}
+function finish(){screen("done");$("finalScore").textContent=score+'/'+questions.length;const pct=score/questions.length;$("resultTitle").textContent=pct===1?'Perfect science score!':pct>=.7?'Excellent work!':pct>=.4?'Good effort!':'Keep experimenting!';$("message").textContent='You scored '+Math.round(pct*100)+'% in '+selected+'. '+(pct>=.7?'You have built a strong understanding of this topic.':'Try again to practise the facts and explanations.') }
+$("start").onclick=start;$("next").onclick=()=>{if(!answered)return;if(index===questions.length-1)finish();else{index++;render()}};$("quit").onclick=()=>screen("choose");$("again").onclick=start;$("other").onclick=()=>screen("choose");buildTopics();
+</script></body></html>
