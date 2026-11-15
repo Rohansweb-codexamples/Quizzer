@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#b92d3b"><title>Electricity &amp; Circuits | Presenter View</title>
+<style>
+:root{--bg:#151a2b;--panel:#222b40;--line:#ffffff22;--red:#d93448;--orange:#f47721;--gold:#ffd36e;--muted:#c4ccda}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 12% 0%,#8e293c55,transparent 34%),var(--bg);color:#fff;font:15px/1.45 Arial,sans-serif}
+header{min-height:66px;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#0d1220dd;border-bottom:1px solid var(--line)}
+.brand{font-size:12px;font-weight:900;letter-spacing:2px;color:#ffd36e}
+a,button{font:inherit}a{color:#ffd36e;text-decoration:none;font-weight:900}
+.btn{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#ffffff12;color:white;font-weight:800;cursor:pointer}.btn.primary{background:var(--red);border-color:var(--red)}.btn.gold{background:var(--gold);color:#20283b;border-color:var(--gold)}
+.layout{max-width:1600px;margin:auto;padding:16px;display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.7fr);gap:15px}
+.panel{background:#222b40eF;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 15px 40px #0003}
+.label{font-size:10px;letter-spacing:2px;font-weight:900;color:#ff9ca5}
+.screen{aspect-ratio:16/9;background:#080c15;border-radius:11px;overflow:hidden;margin-top:10px}.screen iframe{width:100%;height:100%;border:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.jump{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:11px;max-height:245px;overflow:auto}
+.jump button{text-align:left;font-size:11px;line-height:1.35;padding:10px;border:1px solid var(--line);border-radius:9px;background:#ffffff0e;color:#fff;cursor:pointer}.jump button.active{background:var(--gold);color:#20283b;border-color:var(--gold);font-weight:900}
+.upnext{margin-top:10px;padding:18px;border-radius:13px;background:linear-gradient(125deg,#d93448,#79304b);min-height:110px}.upnext small{font-size:10px;letter-spacing:2px}.upnext h2{font-size:22px;margin:9px 0 0}
+.notes{width:100%;min-height:150px;margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:12px;background:#101522;color:#fff;font:14px/1.5 Arial,sans-serif;resize:vertical}
+.muted,.status{font-size:12px;color:var(--muted);margin-top:8px}.timer{font-size:38px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:10px;color:#fff}.timer-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+@media(max-width:850px){.layout{grid-template-columns:1fr;padding:10px}.jump{grid-template-columns:repeat(2,minmax(0,1fr))}.screen{aspect-ratio:4/3}header{padding:10px 12px;align-items:flex-start;flex-wrap:wrap}}
+@media(max-width:430px){.brand{font-size:10px}.jump{grid-template-columns:1fr 1fr}.panel{padding:11px}}
+</style></head><body>
+<header><span class="brand">THREE SEEDS / ELECTRICITY &amp; CIRCUITS / PRESENTER</span><div class="actions" style="margin:0"><a class="btn gold" href="index.html">Topic home</a><button class="btn primary" id="openAudience">Open audience display ↗</button></div></header>
+<main class="layout">
+<section class="panel"><div class="label">LIVE AUDIENCE PREVIEW</div><div class="screen"><iframe id="audience" src="presentation.html?preview=1" title="Electricity and Circuits audience preview" allow="fullscreen"></iframe></div>
+<div class="actions"><button class="btn" id="previous">← Previous</button><button class="btn primary" id="next">Next slide →</button><button class="btn" id="fullscreen">Fullscreen preview</button></div>
+<div class="label" style="margin-top:20px">SLIDE LIST · SELECT TO JUMP</div><div class="jump" id="jump"></div></section>
+<aside>
+<section class="panel"><div class="label">UP NEXT</div><div class="upnext"><small id="slideNo">SLIDE 01</small><h2 id="slideTitle">Loading presentation…</h2></div><div class="label" style="display:block;margin-top:16px">PRIVATE PRESENTER NOTES</div><textarea id="notes" class="notes" placeholder="Write private notes for this slide. They stay in this browser on this device."></textarea><div class="muted">Notes are saved locally and are never sent to the audience display.</div></section>
+<section class="panel" style="margin-top:14px"><div class="label">PRESENTATION TIMER</div><div class="timer" id="clock">00:00</div><div class="timer-actions"><button class="btn primary" id="timerToggle">Start</button><button class="btn" id="timerReset">Reset</button></div><div class="status" id="connection">Connecting to the audience preview…</div></section>
+</aside></main>
+<script>
+(function(){
+const CHANNEL="three-seeds-electricity-circuits",KEY="three-seeds-electricity-circuits-state",NOTE="three-seeds-electricity-circuits-notes-";
+const $=id=>document.getElementById(id),frame=$("audience");
+const channel=("BroadcastChannel" in window)?new BroadcastChannel(CHANNEL):null;
+let slides=[],titles=[],current=0,popup=null,elapsed=0,tick=null;
+function packet(type,index){return{type:type,index:index,at:Date.now()}}
+function publish(){const p=packet("presenter-set-slide",current);try{localStorage.setItem(KEY,JSON.stringify(p))}catch(e){}if(channel)channel.postMessage(p);try{frame.contentWindow.postMessage(p,location.origin)}catch(e){}if(popup&&!popup.closed){try{popup.postMessage(p,location.origin)}catch(e){}}}
+function paint(){if(!slides.length)return;$("previous").disabled=current===0;$("next").textContent=current===slides.length-1?"Restart ↺":"Next slide →";$("slideNo").textContent="SLIDE "+String(current+1).padStart(2,"0")+" / "+String(slides.length).padStart(2,"0");$("slideTitle").textContent=titles[current]||"Presentation";$("notes").value=localStorage.getItem(NOTE+current)||"";[...$("jump").children].forEach((el,i)=>el.classList.toggle("active",i===current))}
+function go(n){if(!slides.length)return;current=Math.max(0,Math.min(slides.length-1,Number(n)||0));paint();publish()}
+function audienceChanged(n){if(!slides.length)return;const v=Math.max(0,Math.min(slides.length-1,Number(n)||0));if(v===current)return;current=v;paint()}
+function collect(){try{const doc=frame.contentDocument;if(!doc)return;const found=[...doc.querySelectorAll(".slide")];if(!found.length){$("connection").textContent="Waiting for the slides to load…";return}slides=found;titles=slides.map((s,i)=>{const h=s.querySelector("h1,h2,h3");return(h?h.textContent:"Slide "+(i+1)).replace(/\s+/g," ").trim()});$("jump").replaceChildren();titles.forEach((title,i)=>{const b=document.createElement("button");b.type="button";b.textContent=String(i+1).padStart(2,"0")+" · "+title;b.addEventListener("click",()=>go(i));$("jump").append(b)});$("connection").textContent=slides.length+" slides connected. Presenter controls are ready.";let saved=0;try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&Number.isInteger(s.index))saved=s.index}catch(e){}current=Math.max(0,Math.min(slides.length-1,saved));paint();publish()}catch(e){$("connection").textContent="Preview could not be read. Check that presentation.html loaded."}}
+frame.addEventListener("load",collect);setTimeout(collect,800);
+function receive(data){if(data&&data.type==="audience-slide-changed")audienceChanged(data.index)}
+window.addEventListener("message",e=>receive(e.data));if(channel)channel.addEventListener("message",e=>receive(e.data));
+window.addEventListener("storage",e=>{if(e.key===KEY&&e.newValue){try{receive(JSON.parse(e.newValue))}catch(err){}}});
+$("previous").addEventListener("click",()=>go(current-1));$("next").addEventListener("click",()=>go(current===slides.length-1?0:current+1));
+$("openAudience").addEventListener("click",()=>{popup=window.open("presentation.html","threeSeedsElectricityAudience");if(!popup){$("connection").textContent="The browser blocked the audience window. Allow pop-ups for this site, then try again.";return}popup.focus();setTimeout(publish,350)});
+$("fullscreen").addEventListener("click",async()=>{try{const d=frame.contentDocument;await (d.documentElement.requestFullscreen?d.documentElement.requestFullscreen():frame.requestFullscreen())}catch(e){$("connection").textContent="Use the audience display's own Full screen button."}});
+$("notes").addEventListener("input",()=>{try{localStorage.setItem(NOTE+current,$("notes").value)}catch(e){$("connection").textContent="Notes could not be saved in this browser."}});
+document.addEventListener("keydown",e=>{if(e.target===$("notes")||e.target.tagName==="INPUT")return;if(e.key==="ArrowRight"||e.key==="PageDown")go(current+1);if(e.key==="ArrowLeft"||e.key==="PageUp")go(current-1)});
+function drawClock(){$("clock").textContent=String(Math.floor(elapsed/60)).padStart(2,"0")+":"+String(elapsed%60).padStart(2,"0")}
+$("timerToggle").addEventListener("click",()=>{if(tick){clearInterval(tick);tick=null;$("timerToggle").textContent="Resume"}else{$("timerToggle").textContent="Pause";tick=setInterval(()=>{elapsed++;drawClock()},1000)}});
+$("timerReset").addEventListener("click",()=>{if(tick)clearInterval(tick);tick=null;elapsed=0;drawClock();$("timerToggle").textContent="Start"});
+})();
+</script></body></html>
