@@ -74,7 +74,7 @@ let current=0,touchX=0,touchY=0;
 function draw(){slides.forEach((s,i)=>s.classList.toggle("active",i===current));counter.textContent="SLIDE "+String(current+1).padStart(2,"0")+" / "+String(slides.length).padStart(2,"0");progress.style.width=((current+1)/slides.length*100)+"%";document.getElementById("previous").disabled=current===0;document.getElementById("next").textContent=current===slides.length-1?"Restart ↺":"Next →"}
 function publish(){const packet={type:"audience-slide-changed",index:current,at:Date.now()};if(channel)channel.postMessage(packet);try{localStorage.setItem(KEY,JSON.stringify(packet))}catch(e){}}
 function show(n,notify){current=Math.max(0,Math.min(slides.length-1,Number(n)||0));draw();if(notify)publish()}
-function receive(packet){if(packet&&packet.type==="presenter-set-slide")show(packet.index,false)}
+function receive(packet){if(packet&&(packet.type==="presenter-set-slide"||packet.type==="audience-slide-changed"))show(packet.index,false)}
 if(channel)channel.addEventListener("message",e=>receive(e.data));
 window.addEventListener("message",e=>receive(e.data));
 window.addEventListener("storage",e=>{if(e.key===KEY&&e.newValue){try{receive(JSON.parse(e.newValue))}catch(err){}}});
