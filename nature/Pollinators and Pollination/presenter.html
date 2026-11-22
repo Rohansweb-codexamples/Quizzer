@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#245b37"><title>Pollinators Presenter View | Three Seeds</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#edf3e9;color:#233c2c;font-family:Arial,Helvetica,sans-serif}.top{min-height:66px;padding:12px 20px;background:#17432c;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.top strong{font-size:13px;letter-spacing:.13em}.top a{color:#ffca91;text-decoration:none;font-weight:800}.top button,button{border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer}.top button,.primary{background:#f47721;color:#fff}.wrap{max-width:1500px;margin:auto;padding:18px;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.8fr);gap:16px}.panel{background:#fff;border:1px solid #d9e4d6;border-radius:16px;padding:16px;box-shadow:0 9px 28px #203b2410}.label{font-size:11px;font-weight:900;letter-spacing:.14em;color:#387447}.screen{margin-top:11px;aspect-ratio:16/9;background:#123321;border-radius:11px;overflow:hidden}.screen iframe{width:100%;height:100%;border:0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{background:#e8f0e4;color:#254331}.actions .primary{background:#f47721;color:white}.actions button:disabled{opacity:.35;cursor:default}.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:240px;overflow:auto;margin-top:12px}.pick{background:white;border:1px solid #dbe5d8;text-align:left;font-size:12px;line-height:1.4;color:#294431}.pick.active{border:2px solid #f47721;background:#fff4e8}.next-card{margin-top:10px;border-radius:12px;padding:16px;background:linear-gradient(125deg,#245b37,#173d29);color:#fff;min-height:92px}.next-card small{font-size:10px;letter-spacing:.14em;color:#ffd19c}.next-card h2{font-size:21px;margin:9px 0}.notes{display:block;width:100%;min-height:150px;margin-top:10px;padding:12px;border:1px solid #d9e4d6;border-radius:10px;font:14px/1.5 Arial,Helvetica,sans-serif;resize:vertical;color:#233c2c}.muted{font-size:12px;line-height:1.5;color:#718074;margin:8px 0}.timer{font-size:42px;font-weight:900;letter-spacing:.04em;margin-top:10px;color:#245b37}.status{font-size:12px;line-height:1.5;color:#6b7c6c;margin-top:9px}
+@media(max-width:850px){.wrap{grid-template-columns:1fr;padding:10px}.top{padding:12px 14px}.list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.list{grid-template-columns:1fr}.top strong{font-size:11px}.panel{padding:12px}.timer{font-size:36px}}
+</style></head><body>
+<header class="top"><strong>THREE SEEDS · POLLINATORS PRESENTER VIEW</strong><div><a href="./">Topic home</a> &nbsp; <button id="openAudience">Open audience display</button></div></header>
+<main class="wrap">
+<section class="panel"><div class="label">AUDIENCE DISPLAY PREVIEW</div><div class="screen"><iframe id="frame" title="Audience presentation preview" allowfullscreen></iframe></div>
+<div class="actions"><button id="previous">Previous</button><button class="primary" id="next">Next slide</button><button id="fullscreen">Fullscreen preview</button></div>
+<div class="label" style="margin-top:18px">SLIDE LIST · SELECT TO JUMP</div><div class="list" id="slideList"></div></section>
+<aside><section class="panel"><div class="label">UP NEXT</div><div class="next-card"><small id="nextNumber">SLIDE 02</small><h2 id="nextTitle">Loading presentation…</h2></div>
+<div class="label" style="margin-top:17px">PRIVATE SPEAKER NOTES</div><textarea id="notes" class="notes" placeholder="Write your speaking notes for this slide."></textarea><p class="muted">Notes are saved in this browser on this device. They stay in Presenter View and are never sent to the audience display.</p></section>
+<section class="panel" style="margin-top:14px"><div class="label">PRESENTATION TIMER</div><div class="timer" id="timer">00:00</div><div class="actions"><button class="primary" id="startTimer">Start</button><button id="resetTimer">Reset</button></div><div class="status" id="status">Loading slide controls…</div></section>
+<section class="panel" style="margin-top:14px"><p class="muted">Use the arrow keys to move between slides. Open the audience display on a projector or second screen. The timer measures elapsed presentation time.</p></section></aside>
+</main>
+<script>
+(function(){
+const $=id=>document.getElementById(id),frame=$("frame"),storageKey="three-seeds-pollinators-slide",commandKey="three-seeds-pollinators-command",notePrefix="three-seeds-pollinators-notes-";
+let titles=[],index=0,audience=null,seconds=0,timer=null,ready=false;
+function noteKey(i){return notePrefix+i}
+function saveNote(){try{localStorage.setItem(noteKey(index),$("notes").value)}catch(e){}}
+function loadNote(){try{$("notes").value=localStorage.getItem(noteKey(index))||""}catch(e){$("notes").value=""}}
+function send(){
+ const message={type:"three-seeds-pollinators-go",index:index};
+ try{if(frame.contentWindow)frame.contentWindow.postMessage(message,location.origin)}catch(e){}
+ try{localStorage.setItem(commandKey,JSON.stringify({index:index,stamp:Date.now()}))}catch(e){}
+ if(audience&&!audience.closed){try{audience.postMessage(message,location.origin)}catch(e){}}
+}
+function render(){
+ if(!ready)return;
+ $("previous").disabled=index===0;
+ $("next").textContent=index===titles.length-1?"Restart":"Next slide";
+ $("nextNumber").textContent=index===titles.length-1?"END OF PRESENTATION":"SLIDE "+String(index+2).padStart(2,"0");
+ $("nextTitle").textContent=titles[index+1]||"Presentation complete";
+ [...$("slideList").children].forEach((b,i)=>b.classList.toggle("active",i===index));
+ loadNote();
+ send();
+}
+function go(n){if(!ready)return;saveNote();index=Math.max(0,Math.min(titles.length-1,n));render()}
+function collect(){
+ try{
+  const doc=frame.contentDocument,slides=[...doc.querySelectorAll(".slide")];
+  if(!slides.length)throw new Error("No slides found");
+  titles=slides.map((s,i)=>s.dataset.title||(s.querySelector("h1,h2,h3")?.textContent||"Slide "+(i+1)).replace(/\s+/g," ").trim());
+  $("slideList").innerHTML="";
+  titles.forEach((title,i)=>{const b=document.createElement("button");b.className="pick";b.textContent=String(i+1).padStart(2,"0")+" · "+title;b.addEventListener("click",()=>go(i));$("slideList").append(b)});
+  ready=true;
+  let saved=0;try{saved=Number(localStorage.getItem(storageKey)||0)}catch(e){}
+  index=Math.max(0,Math.min(titles.length-1,saved));
+  $("status").textContent=titles.length+" slides loaded. Presenter controls are ready.";
+  render();
+ }catch(e){$("status").textContent="The slide list could not be read. Check that the slideshow file is available in this folder."}
+}
+frame.addEventListener("load",()=>setTimeout(collect,150));
+frame.src="./presentation.html";
+$("previous").addEventListener("click",()=>go(index-1));
+$("next").addEventListener("click",()=>go(index===titles.length-1?0:index+1));
+$("openAudience").addEventListener("click",()=>{
+ audience=window.open("./presentation.html","threeSeedsPollinatorsAudience");
+ if(!audience){$("status").textContent="The audience window was blocked. Allow pop-ups for this site and try again.";return}
+ audience.focus();
+ audience.onload=send;
+ setTimeout(send,250);
+ $("status").textContent="Audience display opened. Use the fullscreen control in that window when presenting.";
+});
+$("fullscreen").addEventListener("click",async()=>{try{if(!document.fullscreenElement)await frame.requestFullscreen();else await document.exitFullscreen()}catch(e){$("status").textContent="Fullscreen preview is unavailable in this browser."}});
+$("notes").addEventListener("input",saveNote);
+window.addEventListener("message",e=>{
+ if(e.origin!==location.origin||!e.data)return;
+ if(e.data.type==="three-seeds-pollinators-ready"){
+  if(e.source){try{e.source.postMessage({type:"three-seeds-pollinators-go",index:index},location.origin)}catch(err){}}
+ }
+});
+document.addEventListener("keydown",e=>{
+ if(e.target.closest("textarea,select,input"))return;
+ if(e.key==="ArrowRight"||e.key==="PageDown")go(index+1);
+ if(e.key==="ArrowLeft"||e.key==="PageUp")go(index-1);
+ if(e.key==="Home")go(0);
+ if(e.key==="End")go(titles.length-1);
+});
+function drawTimer(){$("timer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
+$("startTimer").addEventListener("click",()=>{
+ if(timer){clearInterval(timer);timer=null;$("startTimer").textContent="Resume"}
+ else{$("startTimer").textContent="Pause";timer=setInterval(()=>{seconds++;drawTimer()},1000)}
+});
+$("resetTimer").addEventListener("click",()=>{if(timer)clearInterval(timer);timer=null;seconds=0;drawTimer();$("startTimer").textContent="Start"});
+})();
+</script></body></html>
