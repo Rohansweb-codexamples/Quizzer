@@ -171,6 +171,7 @@ const slides=()=>[...stage.querySelectorAll(".slide")];function show(n){const al
 #three-seeds-download-tools button:hover{background:#f47721}
 @media(max-width:600px){#three-seeds-download-tools{top:62px;right:8px}#three-seeds-download-tools button{padding:9px 11px;font-size:11px}}
 @media print{#three-seeds-download-tools{display:none!important}}
+@media print{html,body{height:auto!important;min-height:0!important;overflow:visible!important;background:#fff!important}.stage,.deck{height:auto!important;min-height:0!important;overflow:visible!important}.slide{display:flex!important;position:relative!important;inset:auto!important;width:100%!important;min-height:100vh!important;height:auto!important;break-after:page!important;page-break-after:always!important;overflow:visible!important;animation:none!important}.slide:last-of-type{break-after:auto!important;page-break-after:auto!important}}
 </style>
 <div id="three-seeds-download-tools" aria-label="Presentation downloads">
 <button type="button" id="three-seeds-download-html">Download presentation</button>
