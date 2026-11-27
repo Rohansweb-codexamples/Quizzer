@@ -96,4 +96,40 @@ document.addEventListener("click",e=>{
 window.parent!==window&&window.parent.postMessage({type:"computerz-preview-ready"},"*");
 let initial=0;try{initial=Number(localStorage.getItem("computerz-slide")||0)}catch(e){}show(initial,false);
 })();
-</script></body></html>
+</script>
+<style>
+#three-seeds-download-tools{position:fixed;z-index:9999;right:16px;top:68px;display:flex;gap:8px;font-family:Arial,sans-serif}
+#three-seeds-download-tools button{border:1px solid #ffffff55;border-radius:999px;padding:10px 15px;background:#111827eF;color:#fff;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 5px 18px #0003;backdrop-filter:blur(10px)}
+#three-seeds-download-tools button:hover{background:#f47721}
+@media(max-width:600px){#three-seeds-download-tools{top:62px;right:8px}#three-seeds-download-tools button{padding:9px 11px;font-size:11px}}
+@media print{#three-seeds-download-tools{display:none!important}}
+</style>
+<div id="three-seeds-download-tools" aria-label="Presentation downloads">
+<button type="button" id="three-seeds-download-html">Download presentation</button>
+<button type="button" id="three-seeds-save-pdf">Save as PDF</button>
+</div>
+<script>
+(function(){
+ const downloadButton=document.getElementById('three-seeds-download-html');
+ const pdfButton=document.getElementById('three-seeds-save-pdf');
+ downloadButton.addEventListener('click',async function(){
+   const original=downloadButton.textContent;
+   downloadButton.disabled=true;downloadButton.textContent='Preparing…';
+   try{
+     const response=await fetch(location.href,{cache:'no-store'});
+     if(!response.ok) throw new Error('Could not load presentation');
+     const html=await response.text();
+     const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+     const url=URL.createObjectURL(blob);
+     const link=document.createElement('a');
+     const title=document.title.replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'')||'Three-Seeds-Presentation';
+     link.href=url;link.download=title+'.html';document.body.appendChild(link);link.click();link.remove();
+     setTimeout(()=>URL.revokeObjectURL(url),1500);
+   }catch(error){alert('The presentation could not be downloaded. Please try again while connected to the internet.')}
+   finally{downloadButton.disabled=false;downloadButton.textContent=original}
+ });
+ pdfButton.addEventListener('click',()=>window.print());
+})();
+</script>
+
+</body></html>
