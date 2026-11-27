@@ -49,14 +49,14 @@
  button.addEventListener('click',async function(){
   const slides=Array.from(document.querySelectorAll('.slide'));
   if(!slides.length){alert('No slides were found in this presentation.');return;}
-  if(!window.html2canvas||!window.PptxGenJS){alert('The PowerPoint export tools could not load. Please check your internet connection and try again.');return;}
+  if(!window.html2canvas||!(window.pptxgen||window.PptxGenJS)){alert('The PowerPoint export tools could not load. Please check your internet connection and try again.');return;}
   const root=document.querySelector('.stage,.deck')||slides[0].parentElement;
   const previous=slides.map(s=>s.classList.contains('active'));
   const oldText=button.textContent;
   button.disabled=true;button.textContent='Creating PowerPoint…';
   try{
    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
-   const pptx=new window.PptxGenJS();
+   const PptxConstructor=window.pptxgen||window.PptxGenJS;\n   const pptx=new PptxConstructor();
    pptx.layout='LAYOUT_WIDE';
    pptx.author='Three Seeds';
    pptx.subject='Three Seeds learning presentation';
