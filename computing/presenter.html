@@ -6,5 +6,60 @@
 (()=>{const $=id=>document.getElementById(id);let deck="science",index=0,total=0,titles=[],notes={},seconds=0,timer=null,opened=null;const frame=$("display");const deckPaths={"computing":"./presentation.html","science":"../Science/science-presentation.html","electricity":"../Science/Electricity and Circuits/presentation.html","forces":"../Science/Forces and Magnets/presentation.html","space":"../Science/Space/presentation.html","nature":"../nature/nature-presentation.html","coding":"./presentations/coding.html","hardware":"./presentations/hardware.html","software":"./presentations/software.html"};function path(){return deckPaths[deck]||deckPaths.science}function storage(){return deck==="computing"?"computerz-slide":"three-seeds-"+deck+"-slide"}function noteKey(){return "three-seeds-presenter-notes-"+deck+"-"+index}function load(){deck=$("deck").value;index=0;frame.src=path();$("slideList").innerHTML="";titles=[];notes={};$("status").textContent="Loading presentation…"}function collect(){try{const doc=frame.contentDocument;const slides=[...doc.querySelectorAll(".slide")];if(!slides.length)throw Error("Slides not found");titles=slides.map((s,i)=>{const h=s.querySelector("h1,h2,h3");return (h?h.textContent:s.querySelector(".eyebrow")?.textContent||"Slide "+(i+1)).replace(/\s+/g," ").trim()});total=slides.length;$("slideList").innerHTML="";titles.forEach((title,i)=>{const b=document.createElement("button");b.className="slide-pick";b.textContent=String(i+1).padStart(2,"0")+" · "+title;b.onclick=()=>go(i);$("slideList").append(b)});$("status").textContent=total+" slides loaded. Presenter controls ready.";const saved=Number(localStorage.getItem(storage())||0);go(Math.min(saved,total-1));}catch(e){$("status").textContent="Could not read slides. Check that the presentation and presenter view are on the same website folder.";}}function send(){const msg={type:deck==="computing"?"computerz-go-to-slide":"three-seeds-universal-slide",index};try{frame.contentWindow.postMessage(msg,location.origin)}catch(e){}try{localStorage.setItem(storage(),String(index));localStorage.setItem("three-seeds-presenter-command",JSON.stringify({index,deck,stamp:Date.now()}))}catch(e){}if(opened&&!opened.closed){try{opened.postMessage(msg,location.origin)}catch(e){}}}function render(){if(!total)return;$("back").disabled=index===0;$("forward").textContent=index===total-1?"Restart slides":"Next slide";$("nextNumber").textContent=index===total-1?"COMPLETE":"SLIDE "+String(index+2).padStart(2,"0");$("nextTitle").textContent=index===total-1?"Presentation complete":titles[index+1];$("notes").value=localStorage.getItem(noteKey())||"";document.querySelectorAll(".slide-pick").forEach((b,i)=>b.classList.toggle("active",i===index));send()}function go(i){if(!total)return;index=Math.max(0,Math.min(total-1,i));render()}frame.addEventListener("load",()=>setTimeout(collect,150));$("deck").addEventListener("change",load);$("back").onclick=()=>go(index-1);$("forward").onclick=()=>go(index===total-1?0:index+1);$("launch").onclick=()=>{opened=window.open(path(),"threeSeedsAudience");if(!opened)$("status").textContent="Pop-up blocked. Allow pop-ups to open the audience display.";else{opened.focus();send();setTimeout(()=>{if(opened&&!opened.closed)send()},650);$("status").textContent="Audience display opened. Use its full-screen control."}};$("fullscreen").onclick=async()=>{try{await frame.requestFullscreen()}catch(e){$("status").textContent="Fullscreen preview is unavailable in this browser."}};
 $("downloadHtml").onclick=async()=>{try{const response=await fetch(frame.src,{cache:"no-store"});if(!response.ok)throw Error("Download failed");const blob=new Blob([await response.text()],{type:"text/html;charset=utf-8"});const url=URL.createObjectURL(blob);const link=document.createElement("a");link.href=url;link.download=(frame.contentDocument.title||"Three-Seeds-Presentation").replace(/[^a-z0-9]+/gi,"-")+".html";document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}catch(e){$("status").textContent="Could not download the HTML presentation."}};
 $("savePdf").onclick=()=>{try{frame.contentWindow.focus();frame.contentWindow.print()}catch(e){$("status").textContent="Could not open the print dialog."}};
-$("downloadPptx").onclick=async()=>{try{const doc=frame.contentDocument;const slides=[...doc.querySelectorAll(".slide")];const root=doc.querySelector(".stage,.deck")||slides[0]?.parentElement;if(!slides.length||!root)throw Error("Slides unavailable");if(!window.html2canvas||!(window.pptxgen||window.PptxGenJS))throw Error("Export libraries unavailable");const button=$("downloadPptx");button.disabled=true;button.textContent="Creating PPTX…";const old=slides.map(s=>s.classList.contains("active"));if(doc.fonts?.ready)await doc.fonts.ready;const Pptx=window.pptxgen||window.PptxGenJS;const pptx=new Pptx();pptx.layout="LAYOUT_WIDE";pptx.author="Three Seeds";pptx.title=doc.title;for(let i=0;i<slides.length;i++){slides.forEach((s,j)=>s.classList.toggle("active",i===j));await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));const canvas=await window.html2canvas(root,{scale:1.5,useCORS:true,allowTaint:false,backgroundColor:null,logging:false,windowWidth:frame.contentWindow.innerWidth,windowHeight:frame.contentWindow.innerHeight});const slide=pptx.addSlide();slide.addImage({data:canvas.toDataURL("image/png"),x:0,y:0,w:13.333333,h:7.5})}await pptx.writeFile({fileName:(doc.title.replace(/[^a-z0-9]+/gi,"-")||"Three-Seeds-Presentation")+".pptx"});slides.forEach((s,i)=>s.classList.toggle("active",old[i]));button.textContent="Download PPTX";button.disabled=false}catch(e){console.error(e);$("status").textContent="PowerPoint export failed. Please check your connection and try again.";const button=$("downloadPptx");button.textContent="Download PPTX";button.disabled=false}};$("notes").oninput=e=>{try{localStorage.setItem(noteKey(),e.target.value)}catch(err){}};document.addEventListener("keydown",e=>{if(e.target.tagName==="TEXTAREA")return;if(e.key==="ArrowRight")go(index+1);if(e.key==="ArrowLeft")go(index-1)});function drawTimer(){$("timer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")} $("startTimer").onclick=()=>{if(timer){clearInterval(timer);timer=null;$("startTimer").textContent="Resume"}else{$("startTimer").textContent="Pause";timer=setInterval(()=>{seconds++;drawTimer()},1000)}};$("resetTimer").onclick=()=>{clearInterval(timer);timer=null;seconds=0;drawTimer();$("startTimer").textContent="Start"};const requestedDeck=new URLSearchParams(location.search).get("deck");if(requestedDeck&&deckPaths[requestedDeck])$("deck").value=requestedDeck;load();})();
+$("downloadPptx").onclick=async()=>{
+ const button=$("downloadPptx"),status=$("status");
+ let slides=[],oldActive=[],doc=null;
+ try{
+  doc=frame.contentDocument;
+  slides=[...doc.querySelectorAll(".slide")];
+  const stage=doc.querySelector(".stage")||slides[0]?.parentElement;
+  if(!slides.length||!stage)throw Error("The presentation slides could not be found.");
+  if(!window.html2canvas||!(window.pptxgen||window.PptxGenJS))throw Error("The PowerPoint export libraries did not load.");
+  button.disabled=true;button.textContent="Preparing slides…";
+  oldActive=slides.map(s=>s.classList.contains("active"));
+  if(doc.fonts?.ready)await doc.fonts.ready;
+  // Wait for every regular slide image to finish decoding before capturing.
+  const images=[...doc.querySelectorAll(".slide img")];
+  await Promise.all(images.map(img=>{
+   if(img.complete&&img.naturalWidth)return Promise.resolve();
+   if(img.decode)return img.decode().catch(()=>{});
+   return new Promise(resolve=>{img.addEventListener("load",resolve,{once:true});img.addEventListener("error",resolve,{once:true});});
+  }));
+  const Pptx=window.pptxgen||window.PptxGenJS,pptx=new Pptx();
+  pptx.layout="LAYOUT_WIDE";pptx.author="Three Seeds";pptx.subject="Three Seeds presentation";pptx.title=doc.title||"Three Seeds Presentation";
+  const filename=(doc.title.replace(/[^a-z0-9]+/gi,"-").replace(/^-|-$/g,"")||"Three-Seeds-Presentation")+".pptx";
+  for(let i=0;i<slides.length;i++){
+   button.textContent="Creating slide "+(i+1)+" of "+slides.length+"…";
+   slides.forEach((s,j)=>s.classList.toggle("active",i===j));
+   // Let the HTML slide's entrance animation finish before capturing it.
+   await new Promise(resolve=>setTimeout(resolve,430));
+   const canvas=await window.html2canvas(stage,{
+    scale:1.5,
+    width:1920,height:1080,
+    windowWidth:1920,windowHeight:1080,
+    x:0,y:0,scrollX:0,scrollY:0,
+    useCORS:true,allowTaint:false,imageTimeout:20000,
+    backgroundColor:null,logging:false
+   });
+   // Preserve the full 16:9 frame. Never stretch or crop a mismatched canvas.
+   const out=document.createElement("canvas");out.width=2880;out.height=1620;
+   const ctx=out.getContext("2d");ctx.fillStyle="#0878d1";ctx.fillRect(0,0,out.width,out.height);
+   const ratio=Math.min(out.width/canvas.width,out.height/canvas.height);
+   const w=canvas.width*ratio,h=canvas.height*ratio;
+   ctx.drawImage(canvas,(out.width-w)/2,(out.height-h)/2,w,h);
+   const pptSlide=pptx.addSlide();
+   pptSlide.background={color:"0878D1"};
+   pptSlide.addImage({data:out.toDataURL("image/png"),x:0,y:0,w:13.333333,h:7.5});
+   if(pptSlide.addNotes)pptSlide.addNotes("Slide "+(i+1)+" of "+slides.length+" — exported from the Three Seeds HTML presentation.");
+  }
+  await pptx.writeFile({fileName:filename});
+  status.textContent="PowerPoint downloaded: "+slides.length+" slides, widescreen 16:9, high-resolution full-slide layout.";
+ }catch(e){
+  console.error("PPTX export error:",e);
+  status.textContent="PowerPoint export failed: "+(e&&e.message?e.message:"Please check your connection and try again.");
+ }finally{
+  if(slides.length&&oldActive.length)slides.forEach((s,i)=>s.classList.toggle("active",oldActive[i]));
+  button.textContent="Download PPTX";button.disabled=false;
+ }
+};$("notes").oninput=e=>{try{localStorage.setItem(noteKey(),e.target.value)}catch(err){}};document.addEventListener("keydown",e=>{if(e.target.tagName==="TEXTAREA")return;if(e.key==="ArrowRight")go(index+1);if(e.key==="ArrowLeft")go(index-1)});function drawTimer(){$("timer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")} $("startTimer").onclick=()=>{if(timer){clearInterval(timer);timer=null;$("startTimer").textContent="Resume"}else{$("startTimer").textContent="Pause";timer=setInterval(()=>{seconds++;drawTimer()},1000)}};$("resetTimer").onclick=()=>{clearInterval(timer);timer=null;seconds=0;drawTimer();$("startTimer").textContent="Start"};const requestedDeck=new URLSearchParams(location.search).get("deck");if(requestedDeck&&deckPaths[requestedDeck])$("deck").value=requestedDeck;load();})();
 </script></body></html>
